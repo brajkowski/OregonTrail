@@ -1,13 +1,18 @@
 import gui
-import console
+import game_io
+
+def remove_newline(self,line):
+  if line[-1:] == "\n":
+    return line[:len(line)-1]
+  return line
 
 def main():
-  io = console.io_manager()
-  io.load_all_messages()
-  io.print_welcome()
-  print()
-  io.print_all_locations()
-  gui.run()
+  io_manager = game_io.manager()
+  io_manager.print_message("welcome")
+  io_manager.print_message('locations')
+  io_manager.print_message('store_welcome')
+
+  #gui.run()
 
   
   
