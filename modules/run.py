@@ -5,7 +5,9 @@ def main():
   io = console.io_manager()
   io.load_all_messages()
   io.print_welcome()
-  #gui.run()
+  print()
+  io.print_all_locations()
+  gui.run()
 
   
   

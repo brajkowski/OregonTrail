@@ -11,7 +11,7 @@ def run():
   
   # Load background map image.
   try:
-    window.bgpic("map_edit_resize.png")
+    window.bgpic("../graphics/map_edit_resize.png")
   except:
     print("Error: Could not load window background.")
     
