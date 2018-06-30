@@ -1,0 +1,15 @@
+You must spend between $100 and $200 on oxen.
+There are 2 oxen in a yoke and a yoke is $40.
+How many yokes would you like to buy?
+
+Food is $.50 per pound.
+How many pounds would you like to buy?
+
+A box of 20 bullets costs $2.
+How many boxes would you like to buy?
+
+Spare wagon parts cost $10 each.
+How many spare parts would you like to buy?
+
+Medical kits cost $15 each.
+How many medical kits would you like to buy?
