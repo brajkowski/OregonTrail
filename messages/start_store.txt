@@ -2,7 +2,7 @@ You must spend between $100 and $200 on oxen.
 There are 2 oxen in a yoke and a yoke is $40.
 How many yokes would you like to buy?
 
-Food is $.50 per pound.
+Food is $0.50 per pound.
 How many pounds would you like to buy?
 
 A box of 20 bullets costs $2.

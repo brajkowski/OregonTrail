@@ -43,12 +43,12 @@ class manager(object):
 
   def print_message(self,key):
     print(self.__messages.get(key))
-    print('\n\n')
+    print('\n')
     
   def print_message_parsed(self,key,index):
     message = self.__messages_parsed.get(key)
     print(message[index])
-    print('\n\n')
+    print('\n')
     
   def get_message_parsed_count(self,key):
     message = self.__messages_parsed.get(key)

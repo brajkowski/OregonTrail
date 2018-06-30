@@ -13,8 +13,11 @@ class engine(object):
   
   def start_store(self):
     key = 'start_store'
-    self.io.print_message(key)
+    self.io.print_message('welcome_store')
     message_count = self.io.get_message_parsed_count(key)
+    
+    # Manually set order and attributes for buying items.
+    keys = ['oxen','food','bullets','parts','kits']
     prices = [40,0.5,2,10,15]
     quants = [2,1,20,1,1]
     subtotal = 0.0
@@ -31,20 +34,25 @@ class engine(object):
       except Exception:
         print("You spent ${} on oxen.".format(amount))
         print()
-        
     subtotal += amount
-    print("Sub-total: {}".format(subtotal))
+    self.p.update_inventory(keys[0],response*quants[0])
+    self.p.spend_money(amount)
+    print("Sub-total: ${}".format(subtotal))
+    
+    # Handle the rest of the store buying options.
     for i in range(1,message_count):
       self.io.print_message_parsed(key,i)
       response = self.io.get_input_int()
       amount = response * prices[i]
       subtotal += amount
-      print("Sub-total: {}".format(subtotal))
-    print("Total: {}".format(subtotal))
+      self.p.update_inventory(keys[i],response*quants[i])
+      self.p.spend_money(amount)
       
-      
-      
+      print("Sub-total: ${}".format(subtotal))
+    print("Total: ${}".format(subtotal))
     
+    self.p.print_inventory()
+      
 
   def start(self):
     self.io.print_message('welcome')

@@ -17,10 +17,16 @@ class player(object):
   def get_from_inventory(self,key):
     return self.inventory[key]
   
+  def update_inventory(self,key,value):
+    self.inventory[key] = value
   
+  def spend_money(self,value):
+    new_value = self.inventory['money'] - value
+    self.inventory['money'] = new_value
     
   def print_inventory(self):
     pairs = list(self.inventory.items())
+    print("Player Inventory:")
     for pair in pairs:
       key = pair[0]
       value = pair[1]
