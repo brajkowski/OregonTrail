@@ -2,14 +2,14 @@ class player(object):
   def __init__(self):
     self.inventory = {
         'food':0.0,
-        'money':1600.0,
+        'money':1400.0,
         'oxen':0,
         'kits':0,
         'parts':0
         }
     
     self.food = 0.0
-    self.money = 1600.0
+    self.money = 1400.0
     self.oxen = 0
     self.kits = 0
     self.parts = 0

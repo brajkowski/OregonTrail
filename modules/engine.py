@@ -1,9 +1,10 @@
-import gui
+import graphics
 import game_io
 import player
 
 class engine(object):
   def __init__(self):
+    self.gui = graphics.gui()
     self.io = game_io.manager()
     self.p = player.player()
     
@@ -12,8 +13,9 @@ class engine(object):
     pass
   
   def start_store(self):
+    self.gui.update()
     key = 'start_store'
-    self.io.print_message('welcome_store')
+    self.io.print_message('store_welcome')
     message_count = self.io.get_message_parsed_count(key)
     
     # Manually set order and attributes for buying items.
@@ -30,7 +32,7 @@ class engine(object):
         amount = response * prices[0]
         if not(100 <= amount and amount <= 200):
           raise Exception()
-        break
+        break 
       except Exception:
         print("You spent ${} on oxen.".format(amount))
         print()
@@ -57,7 +59,12 @@ class engine(object):
   def start(self):
     self.io.print_message('welcome')
     self.start_store()
-  
+    
+    # Perform any cleanup here.
+    self.close()
+    
+  def close(self):
+    self.gui.close()
 
 def main():
   e = engine()

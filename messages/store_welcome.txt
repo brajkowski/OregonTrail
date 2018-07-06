@@ -1,14 +1,22 @@
-YOU HAD SAVED $1600 TO SPEND FOR THE TRIP, AND YOU'VE JUST PAID
-$200 FOR A WAGON. YOU WILL NEED TO SPEND THE REST OF YOUR MONEY
-ON THE FOLLOWING ITEMS:
-- OXEN. YOU CAN SPEND $100-$200 ON YOUR TEAM. THE MORE YOU SPEND, THE FASTER
-YOU'LL GO BECAUSE YOU'LL HAVE BETTER ANIMALS
-- FOOD. THE MORE YOU HAVE, THE LESS CHANCE THERE IS OF GETTING SICK
-- AMMUNITION - YOU WILL NEED BULLETS FOR ATTACKS BY ANIMALS AND BANDITS, AND FOR
-HUNTING FOOD
-- MISCELLANEOUS SUPPLIES. THIS INCLUDES MEDICINE AND OTHER THINGS YOU WILL NEED
-FOR SICKNESS AND EMERGENCY REPAIRS
-YOU CAN SPEND ALL YOUR MONEY BEFORE YOU START YOUR TRIP, OR
-YOU CAN SAVE SOME OF YOUR CASH TO SPEND AT FORTS ALONG THE
-WAY WHEN YOU RUN LOW. HOWEVER, ITEMS COST MORE AT THE FORTS.
-YOU CAN ALSO GO HUNTING ALONG THE WAY TO GET MORE FOOD.
+You have saved $1600 to spend on supplies for the trip to Oregon,
+and you had to spend $200 on a wagon.  The remaining $1400 can be
+spent at the store in Independence before you leave.  There you
+can buy:
+
+- Oxen: You need to have enough oxen to pull the wagon but you only
+    have enough spots for 8 oxen.  You will need to spend between
+    $100-200 on oxen.  The more you have, the faster you will go!
+    
+- Food: You can buy any amount of food.  The more you have, the less
+    chance there is of getting sick.
+    
+- Ammo: You will need bullets for attacks by animals and bandits, and
+    for hunting food along the trail.
+    
+- Misc. Supplies: You can buy medical kits and spare wagon parts to aid
+    with any sickness and to fix your wagon along the trail.
+    
+You can spend all your money before you leave, or
+you can save some of your money to spend at forts encountered
+on your journey.  Be aware that the forts will charge more for these
+items, and you can also hunt for more food along the way.
