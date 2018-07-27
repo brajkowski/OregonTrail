@@ -69,6 +69,7 @@ class engine(object):
 def main():
   e = engine()
   e.start()
+  #e.run_tests()
   
   
 if __name__ == "__main__":

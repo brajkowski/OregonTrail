@@ -62,7 +62,7 @@ class manager(object):
       try:
         response = int(input(">>> "))
         break
-      except ValueError:
+      except: #ValueError:
         print("Please enter a valid integer.")
     return response
   
