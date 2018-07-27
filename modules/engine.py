@@ -1,6 +1,7 @@
 import graphics
 import game_io
 import player
+import datetime
 from time import sleep
 
 class engine(object):
@@ -9,11 +10,21 @@ class engine(object):
     self.io = game_io.manager()
     self.player = player.player()
     self.party_names = []
+    self.current_date = datetime.date(1847,3,3)
     self.sleep = 2
     
   def run_tests(self):
-    self.start_store()
-    #self.new_game()
+    # Use sample code before to add time aspect to game.
+    """
+    print(self.current_date)
+    delta = datetime.timedelta(7)
+    test = self.current_date.strftime("%A %d. %B %Y")
+    print(test)
+    self.current_date += delta
+    test = self.current_date.strftime("%A %d. %B %Y")
+    print(test)
+    """
+    self.pick_start_date()
     pass
   
   def new_game(self):
@@ -80,7 +91,22 @@ class engine(object):
     
     self.player.print_inventory()
       
-
+  def pick_start_date(self):
+    print('Would you like to take off on {} (1) or on a different date (2)?'.format(self.current_date))
+    options = [1,2]
+    response = self.io.get_input_int_protected(options)
+    if response == 1:
+      return
+    print('Please enter what month you would like to start: \
+          \n \t March (3) \
+          \n \t April (4) \
+          \n \t May   (5) \
+          ')
+    options = [3,4,5]
+    response = self.io.get_input_int_protected(options)
+    self.current_date.replace(month=response)
+    # TODO: finish picking date.
+    
   def run(self):
     self.new_game()
     sleep(self.sleep)
@@ -92,8 +118,8 @@ class engine(object):
 
 def main():
   e = engine()
-  e.run()
-  #e.run_tests()
+  #e.run()
+  e.run_tests()
   
   
 if __name__ == "__main__":

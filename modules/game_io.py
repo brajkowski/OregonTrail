@@ -13,8 +13,7 @@ class manager(object):
     self.__messages = {}
     self.__messages_parsed = {}
     self.__load_all_messages()
-    self.__load_all_messages_parsed()
-    
+    self.__load_all_messages_parsed()  
   
   def __load_all_messages(self):
     files = list(self.__file_paths.items())
@@ -59,6 +58,17 @@ class manager(object):
     print()
     return response
   
+  def get_input_string_protected(self, options):
+    while True:
+      try:
+        response = str(input(">>> "))
+        if not (response in options):
+          raise Exception()
+        break
+      except Exception:
+        print('Please enter a valid option.')
+    return response
+  
   def get_input_int(self,low=None,high=None):
     while True:
       try:
@@ -72,10 +82,22 @@ class manager(object):
             print('Please enter an integer greater than or equal to {}'.format(low))
             response = self.get_input_int(low)
         break
-      except: #ValueError:
+      except:
         print("Please enter a valid integer.")
     print()
     return response
+  
+  def get_input_int_protected(self, options):
+    while True:
+      try:
+        response = int(input(">>> "))
+        if not (response in options):
+          raise Exception()
+        break
+      except Exception:
+        print('Please enter a valid option.')
+    return response
+  
   
   def get_input_float(self):
     return float(input(">>> "))
