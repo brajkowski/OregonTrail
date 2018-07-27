@@ -48,22 +48,33 @@ class manager(object):
   def print_message_parsed(self,key,index):
     message = self.__messages_parsed.get(key)
     print(message[index])
-    print('\n')
+    #print('\n')
     
   def get_message_parsed_count(self,key):
     message = self.__messages_parsed.get(key)
     return len(message)
     
   def get_input_string(self):
-    return str(input(">>> "))
+    response = str(input(">>> "))
+    print()
+    return response
   
   def get_input_int(self,low=None,high=None):
     while True:
       try:
         response = int(input(">>> "))
+        if low != None and high != None:
+          if not(low <= response and response <= high):
+            print('Please enter an integer between {} and {}.'.format(low,high))
+            response = self.get_input_int(low,high)
+        if low != None and high == None:
+          if not (low <= response):
+            print('Please enter an integer greater than or equal to {}'.format(low))
+            response = self.get_input_int(low)
         break
       except: #ValueError:
         print("Please enter a valid integer.")
+    print()
     return response
   
   def get_input_float(self):

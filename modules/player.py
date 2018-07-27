@@ -19,6 +19,11 @@ class player(object):
   
   def update_inventory(self,key,value):
     self.inventory[key] = value
+    
+  def can_spend(self,amount):
+    if amount > self.inventory['money']:
+      return False
+    return True
   
   def spend_money(self,value):
     new_value = self.inventory['money'] - value
@@ -31,6 +36,7 @@ class player(object):
       key = pair[0]
       value = pair[1]
       print("\t{}: {}".format(key,value))
+  
     
   
     
