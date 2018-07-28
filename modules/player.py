@@ -1,4 +1,5 @@
 import datetime
+import locations
 
 class player():
   def __init__(self):
@@ -10,10 +11,11 @@ class player():
         'kits':0,
         'parts':0
         }
-    self.location = 0
+    self.current_location = 0
     self.names = []
     self.current_date = datetime.date(1847,3,3)
     self.miles_traveled = 0
+    self.locations = locations.parse_locations()
   
   def load_debug(self):
     self.inventory = {'food':1000,
@@ -23,10 +25,15 @@ class player():
         'kits':10,
         'parts':10
         }
-    self.location = 0
+    self.current_location = 0
     self.names = ['This','Is','A','Debug','Test']
     self.current_date = datetime.date(1847,3,3)
     self.miles_traveled = 0
+    self.locations = locations.parse_locations()
+  
+  def print_locations(self):
+    for location in self.locations:
+      location.describe()
   
   def get_from_inventory(self,key):
     return self.inventory[key]

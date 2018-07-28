@@ -1,6 +1,7 @@
 import graphics
 import game_io
 import player
+import locations
 from time import sleep
 
 class engine():
@@ -12,7 +13,7 @@ class engine():
     
   def run_tests(self):
     self.player.load_debug()
-    self.take_turn()
+    self.player.print_locations()
     pass
   
   def new_game(self):
