@@ -1,8 +1,9 @@
-class manager(object):
+class manager():
   def __init__(self):
     self.__file_paths = {
         'welcome':'../messages/welcome.txt',
-        'store_welcome':'../messages/store_welcome.txt'
+        'store_welcome':'../messages/store_welcome.txt',
+        'turn_options':'../messages/turn_options.txt'
         }
     
     self.__file_paths_parsed = {

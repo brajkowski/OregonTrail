@@ -1,6 +1,6 @@
 import turtle
 
-class gui(object):
+class gui():
   def __init__(self):
     # Initialize.
     turtle.setup()

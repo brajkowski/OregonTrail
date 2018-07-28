@@ -1,43 +1,29 @@
 import graphics
 import game_io
 import player
-import datetime
 from time import sleep
 
-class engine(object):
+class engine():
   def __init__(self):
     self.gui = graphics.gui()
     self.io = game_io.manager()
     self.player = player.player()
-    self.party_names = []
-    self.current_date = datetime.date(1847,3,3)
     self.sleep = 2
     
   def run_tests(self):
-    # Use sample code before to add time aspect to game.
-    """
-    print(self.current_date)
-    delta = datetime.timedelta(7)
-    test = self.current_date.strftime("%A %d. %B %Y")
-    print(test)
-    self.current_date += delta
-    test = self.current_date.strftime("%A %d. %B %Y")
-    print(test)
-    """
-    self.pick_start_date()
+    self.player.load_debug()
+    self.take_turn()
     pass
   
   def new_game(self):
     self.io.print_message('welcome')
     sleep(self.sleep)
     print('What is your name?')
-    self.party_names.append(self.io.get_input_string())
+    self.player.names.append(self.io.get_input_string())
     counts = ['first','second','third','fourth']
     for i in range(4):
       print('Please enter the name of your {} party member.'.format(counts[i]))
-      self.party_names.append(self.io.get_input_string())
-    
-    print('size of party={}'.format(len(self.party_names)))      
+      self.player.names.append(self.io.get_input_string())
   
   def start_store(self):
     self.gui.update()
@@ -92,25 +78,41 @@ class engine(object):
     self.player.print_inventory()
       
   def pick_start_date(self):
-    print('Would you like to take off on {} (1) or on a different date (2)?'.format(self.current_date))
+    print('Would you like to take off on {} (1) or on a different date (2)?'.format(self.player.current_date))
     options = [1,2]
     response = self.io.get_input_int_protected(options)
     if response == 1:
       return
-    print('Please enter what month you would like to start: \
+    print('Please enter what month you would like to start. \
           \n \t March (3) \
           \n \t April (4) \
           \n \t May   (5) \
           ')
     options = [3,4,5]
     response = self.io.get_input_int_protected(options)
-    self.current_date.replace(month=response)
-    # TODO: finish picking date.
+    days_allowed = 31
+    if response == 4:
+      days_allowed = 30
+    self.player.current_date = self.player.current_date.replace(month=response)
+    print('Please enter what day you would like to start.')
+    response = self.io.get_input_int(low = 1, high = days_allowed)
+    self.player.current_date = self.player.current_date.replace(day=response)
+  
+  def take_turn(self):
+    self.player.print_status()
+    self.io.print_message('turn_options')
+    options = [1,2,3]
+    response = self.io.get_input_int_protected(options)
+    print('Debug: user chose to:',response)
+    # TODO: handle turn options
     
+  
   def run(self):
     self.new_game()
-    sleep(self.sleep)
+    #sleep(self.sleep)
     self.start_store()
+    self.pick_start_date()
+    self.take_turn()
     self.close()
     
   def close(self):
