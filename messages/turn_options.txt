@@ -10,3 +10,4 @@ What would you like to do?
   (3) Hunt
     - Takes 1 day
     - Chance to encounter an animal and obtain food
+  (4) Quit

@@ -1,19 +1,22 @@
 import graphics
 import game_io
 import player
+import random
 #import locations
 from time import sleep
 
 class engine():
   def __init__(self):
-    self.gui = graphics.gui()
+    #self.gui = graphics.gui()
     self.io = game_io.manager()
     self.player = player.player()
     self.sleep = 2
+    self.should_close = False
     
   def run_tests(self):
     self.player.load_debug()
-    self.player.print_status()
+    while not self.should_close:
+      self.take_turn()
     pass
   
   def new_game(self):
@@ -54,7 +57,7 @@ class engine():
         print()
     subtotal += amount
     self.player.update_inventory(keys[0],response*quants[0])
-    self.player.spend_money(amount)
+    self.player.consume('money', amount)
     print("Sub-total: ${}".format(subtotal))
     
     # Handle the rest of the store buying options.
@@ -64,14 +67,14 @@ class engine():
         try:
           response = self.io.get_input_int(low=0)
           amount = response * prices[i]
-          if not self.player.can_spend(amount):
+          if not self.player.can_consume('money',amount):
             raise Exception()
           break
         except Exception:
           print("You don't enough money, please enter a new amount.")
       subtotal += amount
       self.player.update_inventory(keys[i],response*quants[i])
-      self.player.spend_money(amount)
+      self.player.consume('money', amount)
       
       print("Sub-total: ${}".format(subtotal))
     print("Total: ${}".format(subtotal))
@@ -102,18 +105,63 @@ class engine():
   def take_turn(self):
     self.player.print_status()
     self.io.print_message('turn_options')
-    options = [1,2,3]
+    options = [1,2,3,4]
     response = self.io.get_input_int_protected(options)
     print('Debug: user chose to:',response)
-    # TODO: handle turn options
+    if response == 1:
+      self.rest()
+    elif response == 2:
+      self.travel()
+    elif response == 3:
+      self.hunt()
+    elif response == 4:
+      self.should_close = True
     
+    # Perform general turn events here.
+    self.player.update_miles_to_next()
+      
   
+  # TODO: Develop turn options.
+  def hunt(self):
+    pass
+  
+  def travel(self):
+    random.seed()
+    miles_to_travel = random.randint(70,140)
+    days_elapsed = 14
+    food_consumed = self.player.members_alive * 3 * days_elapsed
+    
+    if miles_to_travel > self.player.miles_to_next_mark:
+      location = self.player.get_next_location()
+      print('You were prepared to travel {} but arrived at {}'.format(miles_to_travel, location.name))
+      miles_to_travel = self.player.miles_to_next_mark
+      self.player.update_next_location()
+    else:  
+      print('You traveled {} miles in {} days'.format(miles_to_travel,days_elapsed))
+    print('You consumed {} pounds of food'.format(food_consumed))
+    
+    self.player.advance_time(days_elapsed)
+    self.player.consume('food', food_consumed)
+    self.player.travel(miles_to_travel)
+    
+  def rest(self):
+    random.seed()
+    days_to_sleep = random.randint(1,3)
+    food_consumed = self.player.members_alive * 3 * days_to_sleep
+    print('You decided to rest for {} days'.format(days_to_sleep))
+    print('You consumed {} pounds of food'.format(food_consumed))
+    
+    self.player.advance_time(days_to_sleep)
+    self.player.consume('food', food_consumed)
+    # TODO: Add recovery.
+    
   def run(self):
     self.new_game()
     #sleep(self.sleep)
     self.start_store()
     self.pick_start_date()
-    self.take_turn()
+    while not self.should_close:
+      self.take_turn()
     self.close()
     
   def close(self):

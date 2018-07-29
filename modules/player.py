@@ -16,6 +16,8 @@ class player():
     self.current_date = datetime.date(1847,3,3)
     self.miles_traveled = 0
     self.locations = locations.parse_locations()
+    self.members_alive = 5
+    self.update_miles_to_next()
   
   def load_debug(self):
     self.inventory = {'food':1000,
@@ -27,9 +29,11 @@ class player():
         }
     self.next_location = 0
     self.names = ['This','Is','A','Debug','Test']
-    self.current_date = datetime.date(1847,3,3)
+    self.current_date = datetime.date(1847,4,9)
     self.miles_traveled = 0
     self.locations = locations.parse_locations()
+    self.members_alive = 5
+    self.update_miles_to_next()
   
   def print_locations(self):
     for location in self.locations:
@@ -41,21 +45,26 @@ class player():
   def update_inventory(self,key,value):
     self.inventory[key] = value
     
-  def can_spend(self,amount):
-    if amount > self.inventory['money']:
+  def can_consume(self,key, amount):
+    if amount > self.inventory[key]:
       return False
     return True
   
-  def spend_money(self,value):
-    new_value = self.inventory['money'] - value
-    self.inventory['money'] = new_value
+  def consume(self, key, amount):
+    new_value = self.inventory[key] - amount
+    self.inventory[key] = new_value
+  
+  # Deprecated.
+  #def spend_money(self,value):
+  #  new_value = self.inventory['money'] - value
+  #  self.inventory['money'] = new_value
    
   def print_status(self):
-    miles_to_next = self.locations[self.next_location].mileage - self.miles_traveled
+    #miles_to_next = self.locations[self.next_location].mileage - self.miles_traveled
     print('---------- Status ----------')
     print('Date:', self.current_date)
     print('Miles Traveled:', self.miles_traveled)
-    print('Miles to next landmark:', miles_to_next)
+    print('Miles to next landmark:', self.miles_to_next_mark)
     print('Food: {} pounds'.format(self.inventory['food']))
     print('Bullets:',self.inventory['bullets'])
     print('Cash: ${}'.format(self.inventory['money']))
@@ -73,8 +82,20 @@ class player():
     delta = datetime.timedelta(days)
     self.current_date += delta
   
+  def update_miles_to_next(self):
+    self.miles_to_next_mark = self.locations[self.next_location].mileage - self.miles_traveled
+    
+  def update_next_location(self):
+    self.next_location += 1
+  
   def print_current_date(self):
     print(self.current_date.strftime("%A %d. %B %Y"))
+    
+  def get_next_location(self):
+    return self.locations[self.next_location]
+  
+  def travel(self, miles):
+    self.miles_traveled += miles
   
     
   

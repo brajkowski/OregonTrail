@@ -21,5 +21,5 @@ class gui():
     self.window.listen()
     
   def close(self):
-    self.window.exitonclick()
+    #self.window.exitonclick()
     turtle.done()  
