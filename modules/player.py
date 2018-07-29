@@ -11,7 +11,7 @@ class player():
         'kits':0,
         'parts':0
         }
-    self.current_location = 0
+    self.next_location = 0
     self.names = []
     self.current_date = datetime.date(1847,3,3)
     self.miles_traveled = 0
@@ -25,7 +25,7 @@ class player():
         'kits':10,
         'parts':10
         }
-    self.current_location = 0
+    self.next_location = 0
     self.names = ['This','Is','A','Debug','Test']
     self.current_date = datetime.date(1847,3,3)
     self.miles_traveled = 0
@@ -51,11 +51,11 @@ class player():
     self.inventory['money'] = new_value
    
   def print_status(self):
-    
+    miles_to_next = self.locations[self.next_location].mileage - self.miles_traveled
     print('---------- Status ----------')
     print('Date:', self.current_date)
     print('Miles Traveled:', self.miles_traveled)
-    print('Miles to next landmark', 'Add next land mark') # TODO: miles to next landmarkprint()
+    print('Miles to next landmark:', miles_to_next)
     print('Food: {} pounds'.format(self.inventory['food']))
     print('Bullets:',self.inventory['bullets'])
     print('Cash: ${}'.format(self.inventory['money']))
