@@ -1,5 +1,5 @@
 import random
-import game_io
+import game_io as io
 import puzzle
 
 def hunt(player, debug=False):
@@ -38,8 +38,7 @@ def hunt(player, debug=False):
   for animal in encountered:
     print("Do you want to hunt the {}? (1) Yes (2) No".format(animal[0]))
     options = [1,2]
-    manager = game_io.manager()
-    response = manager.get_input_int_protected(options)
+    response = io.get_input_int_protected(options)
     if response == 1:
       if player.get_from_inventory('bullets') >= 10:
         print("Win the guessing game to successfully hunt")

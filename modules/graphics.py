@@ -18,8 +18,6 @@ class gui():
       
   def update(self):
     self.tester.forward(10)
-    self.window.listen()
     
   def close(self):
-    #self.window.exitonclick()
-    turtle.done()  
+    turtle.bye()

@@ -1,5 +1,5 @@
 import graphics
-import game_io
+import game_io as io
 import player
 import random
 import hunting
@@ -9,8 +9,8 @@ from time import sleep
 
 class engine():
   def __init__(self):
-    #self.gui = graphics.gui()
-    self.io = game_io.manager()
+    self.gui = graphics.gui()
+    self.messages = io.messages()
     self.player = player.player()
     self.sleep = 2
     self.should_close = False
@@ -23,22 +23,22 @@ class engine():
     pass
   
   def new_game(self):
-    self.io.print_message('welcome')
+    self.messages.print_message('welcome')
     sleep(self.sleep)
     print('What is your name?')
-    self.player.names.append(self.io.get_input_string())
+    self.player.names.append(io.get_input_string())
     counts = ['first','second','third','fourth']
     for i in range(4):
       print('Please enter the name of your {} party member.'.format(counts[i]))
-      self.player.names.append(self.io.get_input_string())
+      self.player.names.append(io.get_input_string())
   
   def start_store(self):
     self.gui.update()
     key = 'start_store'
-    self.io.print_message('store_welcome')
+    self.messages.print_message('store_welcome')
     sleep(self.sleep)
     
-    message_count = self.io.get_message_parsed_count(key)
+    message_count = self.messages.get_message_parsed_count(key)
     
     # Manually set order and attributes for buying items.
     keys = ['oxen','food','bullets','parts','kits']
@@ -49,8 +49,8 @@ class engine():
     # Handle special case for buying yokes.
     while True:
       try:
-        self.io.print_message_parsed(key,0)
-        response = self.io.get_input_int(low=0)
+        self.messages.print_message_parsed(key,0)
+        response = io.get_input_int(low=0)
         amount = response * prices[0]
         if not(100 <= amount and amount <= 200):
           raise Exception()
@@ -65,10 +65,10 @@ class engine():
     
     # Handle the rest of the store buying options.
     for i in range(1,message_count):
-      self.io.print_message_parsed(key,i)
+      self.messages.print_message_parsed(key,i)
       while True:
         try:
-          response = self.io.get_input_int(low=0)
+          response = io.get_input_int(low=0)
           amount = response * prices[i]
           if not self.player.can_consume('money',amount):
             raise Exception()
@@ -87,7 +87,7 @@ class engine():
   def pick_start_date(self):
     print('Would you like to take off on {} (1) or on a different date (2)?'.format(self.player.current_date))
     options = [1,2]
-    response = self.io.get_input_int_protected(options)
+    response = io.get_input_int_protected(options)
     if response == 1:
       return
     print('Please enter what month you would like to start. \
@@ -96,21 +96,20 @@ class engine():
           \n \t May   (5) \
           ')
     options = [3,4,5]
-    response = self.io.get_input_int_protected(options)
+    response = io.get_input_int_protected(options)
     days_allowed = 31
     if response == 4:
       days_allowed = 30
     self.player.current_date = self.player.current_date.replace(month=response)
     print('Please enter what day you would like to start.')
-    response = self.io.get_input_int(low = 1, high = days_allowed)
+    response = io.get_input_int(low = 1, high = days_allowed)
     self.player.current_date = self.player.current_date.replace(day=response)
   
   def take_turn(self):
     self.player.print_status()
-    self.io.print_message('turn_options')
+    self.messages.print_message('turn_options')
     options = [1,2,3,4]
-    response = self.io.get_input_int_protected(options)
-    print('Debug: user chose to:',response)
+    response = io.get_input_int_protected(options)
     if response == 1:
       self.rest()
     elif response == 2:
@@ -131,9 +130,9 @@ class engine():
     print("You returned with {} pounds of food".format(hunted_food))
     
     # Adjust rations.
-    self.io.print_message('rations')
+    self.messages.print_message('rations')
     options = [1,2,3]
-    response = self.io.get_input_int_protected(options)
+    response = io.get_input_int_protected(options)
     if response == 1:
       self.player.rations = 2
     elif response == 2:
@@ -153,6 +152,7 @@ class engine():
       total_food = current_food + hunted_food
       self.player.update_inventory('food',total_food)
     self.player.advance_time(1)
+    # TODO: Add recovery.
       
   def travel(self):
     random.seed()
@@ -198,8 +198,8 @@ class engine():
 
 def main():
   e = engine()
-  #e.run()
-  e.run_tests()
+  e.run()
+  #e.run_tests()
   
   
 if __name__ == "__main__":

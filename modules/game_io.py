@@ -1,4 +1,4 @@
-class manager():
+class messages():
   def __init__(self):
     self.__file_paths = {
         'welcome':'../messages/welcome.txt',
@@ -55,52 +55,52 @@ class manager():
     message = self.__messages_parsed.get(key)
     return len(message)
     
-  def get_input_string(self):
-    response = str(input(">>> "))
-    print()
-    return response
-  
-  def get_input_string_protected(self, options):
-    while True:
-      try:
-        response = str(input(">>> "))
-        if not (response in options):
-          raise Exception()
-        break
-      except Exception:
-        print('Please enter a valid option.')
-    return response
-  
-  def get_input_int(self,low=None,high=None):
-    while True:
-      try:
-        response = int(input(">>> "))
-        if low != None and high != None:
-          if not(low <= response and response <= high):
-            print('Please enter an integer between {} and {}.'.format(low,high))
-            response = self.get_input_int(low,high)
-        if low != None and high == None:
-          if not (low <= response):
-            print('Please enter an integer greater than or equal to {}'.format(low))
-            response = self.get_input_int(low)
-        break
-      except:
-        print("Please enter a valid integer.")
-    print()
-    return response
-  
-  def get_input_int_protected(self, options):
-    while True:
-      try:
-        response = int(input(">>> "))
-        if not (response in options):
-          raise Exception()
-        break
-      except Exception:
-        print('Please enter a valid option.')
-    return response
-  
-  
-  def get_input_float(self):
-    return float(input(">>> "))
+def get_input_string():
+  response = str(input(">>> "))
+  print()
+  return response
+
+def get_input_string_protected(options):
+  while True:
+    try:
+      response = str(input(">>> "))
+      if not (response in options):
+        raise Exception()
+      break
+    except Exception:
+      print('Please enter a valid option.')
+  return response
+
+def get_input_int(low=None,high=None):
+  while True:
+    try:
+      response = int(input(">>> "))
+      if low != None and high != None:
+        if not(low <= response and response <= high):
+          print('Please enter an integer between {} and {}.'.format(low,high))
+          response = get_input_int(low,high)
+      if low != None and high == None:
+        if not (low <= response):
+          print('Please enter an integer greater than or equal to {}'.format(low))
+          response = get_input_int(low)
+      break
+    except:
+      print("Please enter a valid integer.")
+  print()
+  return response
+
+def get_input_int_protected(options):
+  while True:
+    try:
+      response = int(input(">>> "))
+      if not (response in options):
+        raise Exception()
+      break
+    except Exception:
+      print('Please enter a valid option.')
+  return response
+
+
+def get_input_float():
+  return float(input(">>> "))
       

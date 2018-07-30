@@ -1,5 +1,3 @@
-#import game_io
-
 class location():
   def __init__(self, name, mileage, kind=None, height=None):
     self.name = name
