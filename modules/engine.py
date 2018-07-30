@@ -2,6 +2,7 @@ import graphics
 import game_io
 import player
 import random
+import hunting
 #import locations
 from time import sleep
 
@@ -12,6 +13,7 @@ class engine():
     self.player = player.player()
     self.sleep = 2
     self.should_close = False
+    self.rations = 3
     
   def run_tests(self):
     self.player.load_debug()
@@ -123,17 +125,43 @@ class engine():
   
   # TODO: Develop turn options.
   def hunt(self):
-    pass
-  
+    current_food = self.player.get_from_inventory('food')
+    hunted_food = hunting.hunt(self.player,debug=True)
+    print("You returned with {} pounds of food".format(hunted_food))
+    
+    # Adjust rations.
+    self.io.print_message('rations')
+    options = [1,2,3]
+    response = self.io.get_input_int_protected(options)
+    if response == 1:
+      self.player.rations = 2
+    elif response == 2:
+      self.player.rations = 3
+    elif response == 3:
+      self.player.rations = 5
+      
+    food_consumed = self.player.members_alive * self.player.rations
+    current_food -= food_consumed
+    
+    if current_food + hunted_food > 1000:
+      print("The wagon can only hold 1000 pounds of food")
+      left_food = hunted_food + current_food - 1000
+      print("You left {} pounds of food behind".format(left_food))
+      self.player.update_inventory('food', 1000)
+    else:
+      total_food = current_food + hunted_food
+      self.player.update_inventory('food',total_food)
+    self.player.advance_time(1)
+      
   def travel(self):
     random.seed()
     miles_to_travel = random.randint(70,140)
     days_elapsed = 14
-    food_consumed = self.player.members_alive * 3 * days_elapsed
+    food_consumed = self.player.members_alive * self.player.rations * days_elapsed
     
     if miles_to_travel > self.player.miles_to_next_mark:
       location = self.player.get_next_location()
-      print('You were prepared to travel {} but arrived at {}'.format(miles_to_travel, location.name))
+      print('You were prepared to travel {} miles but arrived at {}'.format(miles_to_travel, location.name))
       miles_to_travel = self.player.miles_to_next_mark
       self.player.update_next_location()
     else:  
@@ -147,7 +175,7 @@ class engine():
   def rest(self):
     random.seed()
     days_to_sleep = random.randint(1,3)
-    food_consumed = self.player.members_alive * 3 * days_to_sleep
+    food_consumed = self.player.members_alive * self.player.rations * days_to_sleep
     print('You decided to rest for {} days'.format(days_to_sleep))
     print('You consumed {} pounds of food'.format(food_consumed))
     

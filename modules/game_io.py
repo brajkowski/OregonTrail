@@ -3,7 +3,8 @@ class manager():
     self.__file_paths = {
         'welcome':'../messages/welcome.txt',
         'store_welcome':'../messages/store_welcome.txt',
-        'turn_options':'../messages/turn_options.txt'
+        'turn_options':'../messages/turn_options.txt',
+        'rations':'../messages/rations.txt'
         }
     
     self.__file_paths_parsed = {

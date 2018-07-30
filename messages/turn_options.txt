@@ -1,13 +1,15 @@
 What would you like to do?
   (1) Stop to rest
-    - You can rest 1, 2, or 3 days
-    - Consumes 3 pounds of food per person per day
+    - Randomly rest 1, 2, or 3 days
+    - Consumes the set ration amount of food per person per day
     - Any sick members will be fully healed
   (2) Continue on the trail
     - Travel for 2 weeks
-    - Consumes 3 pounds of food per person per day
+    - Consumes the set ration amount of food per person per day
     - Cover between 70 and 140 miles
   (3) Hunt
     - Takes 1 day
-    - Chance to encounter an animal and obtain food
+    - Chance to encounter animals and obtain food
+    - Set food rations
+    - Any sick members will be fully healed
   (4) Quit

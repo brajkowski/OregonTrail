@@ -18,9 +18,10 @@ class player():
     self.locations = locations.parse_locations()
     self.members_alive = 5
     self.update_miles_to_next()
+    self.rations = 3
   
   def load_debug(self):
-    self.inventory = {'food':1000,
+    self.inventory = {'food':500,
         'money':200,
         'bullets':1000,
         'oxen':10,
@@ -34,6 +35,7 @@ class player():
     self.locations = locations.parse_locations()
     self.members_alive = 5
     self.update_miles_to_next()
+    self.rations = 3
   
   def print_locations(self):
     for location in self.locations:
@@ -66,6 +68,7 @@ class player():
     print('Miles Traveled:', self.miles_traveled)
     print('Miles to next landmark:', self.miles_to_next_mark)
     print('Food: {} pounds'.format(self.inventory['food']))
+    print('Rations: {} pounds per person'.format(self.rations))
     print('Bullets:',self.inventory['bullets'])
     print('Cash: ${}'.format(self.inventory['money']))
     print('----------------------------')

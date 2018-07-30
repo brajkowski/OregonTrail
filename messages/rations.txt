@@ -1,0 +1,4 @@
+How well would you like to eat?
+  - (1) Poorly: 2 pounds of food per person, per day
+  - (2) Moderately: 3 pounds of food per person, per day
+  - (3) Well: 5 pounds of food per person, per day
