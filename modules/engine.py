@@ -3,8 +3,6 @@ import game_io as io
 import player
 import random
 import hunting
-import puzzle
-#import locations
 from time import sleep
 
 class engine():
