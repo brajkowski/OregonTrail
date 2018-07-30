@@ -3,6 +3,7 @@ import game_io as io
 import player
 import random
 import hunting
+import misfortunes
 from time import sleep
 
 class engine():
@@ -18,6 +19,14 @@ class engine():
     self.player.load_debug()
     while not self.should_close:
       self.take_turn()
+      misfortunes.randomize(self.player)
+      """
+      misfortunes.sickness(self.player.names)
+      misfortunes.bad_weather()
+      misfortunes.oxen_dies()
+      misfortunes.theif_attacks()
+      misfortunes.wagon_breaks()
+      """
     pass
   
   def new_game(self):
@@ -175,7 +184,7 @@ class engine():
     random.seed()
     days_to_sleep = random.randint(1,3)
     food_consumed = self.player.members_alive * self.player.rations * days_to_sleep
-    print('You decided to rest for {} days'.format(days_to_sleep))
+    print('You decided to rest for {} day(s)'.format(days_to_sleep))
     print('You consumed {} pounds of food'.format(food_consumed))
     
     self.player.advance_time(days_to_sleep)
@@ -196,8 +205,8 @@ class engine():
 
 def main():
   e = engine()
-  e.run()
-  #e.run_tests()
+  #e.run()
+  e.run_tests()
   
   
 if __name__ == "__main__":
