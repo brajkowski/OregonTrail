@@ -3,6 +3,7 @@ import game_io
 import player
 import random
 import hunting
+import puzzle
 #import locations
 from time import sleep
 
@@ -126,7 +127,7 @@ class engine():
   # TODO: Develop turn options.
   def hunt(self):
     current_food = self.player.get_from_inventory('food')
-    hunted_food = hunting.hunt(self.player,debug=True)
+    hunted_food = hunting.hunt(self.player)
     print("You returned with {} pounds of food".format(hunted_food))
     
     # Adjust rations.
