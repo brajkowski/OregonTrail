@@ -20,13 +20,7 @@ class engine():
     while not self.should_close:
       self.take_turn()
       misfortunes.randomize(self.player)
-      """
-      misfortunes.sickness(self.player.names)
-      misfortunes.bad_weather()
-      misfortunes.oxen_dies()
-      misfortunes.theif_attacks()
-      misfortunes.wagon_breaks()
-      """
+
     pass
   
   def new_game(self):
@@ -128,6 +122,14 @@ class engine():
     
     # Perform general turn events here.
     self.player.update_miles_to_next()
+    current_food = self.player.get_from_inventory('food')
+    if current_food <= 0:
+      print("You ran out of food")
+      print("Your party starved to death")
+      self.should_close = True
+    end_from_misfortune = misfortunes.randomize(self.player)
+    if end_from_misfortune:
+      self.should_close = True
       
   
   # TODO: Develop turn options.
@@ -205,8 +207,8 @@ class engine():
 
 def main():
   e = engine()
-  #e.run()
-  e.run_tests()
+  e.run()
+  #e.run_tests()
   
   
 if __name__ == "__main__":

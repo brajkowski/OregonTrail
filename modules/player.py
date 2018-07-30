@@ -55,6 +55,7 @@ class player():
   def consume(self, key, amount):
     new_value = self.inventory[key] - amount
     self.inventory[key] = new_value
+    return new_value
   
   # Deprecated.
   #def spend_money(self,value):

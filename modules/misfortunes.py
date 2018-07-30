@@ -10,7 +10,7 @@ def randomize(player):
   misfortunes = [
       sickness,
       oxen_dies,
-      theif_attacks,
+      thief_attacks,
       wagon_breaks,
       bad_weather,
       fortune
@@ -18,12 +18,12 @@ def randomize(player):
   i_misfortune = random.randint(0,len(misfortunes)-1)
   misfortune = misfortunes[i_misfortune]
   if misfortune == sickness:
-    misfortune(player.names)
+    return misfortune(player)
   else:
-    misfortune()
+    return misfortune(player)
 
-# TODO: Define all misfortune functions.
-def sickness(names):
+# TODO: Flesh out.
+def sickness(player):
   random.seed()
   diseases = [
       'typhoid',
@@ -34,26 +34,38 @@ def sickness(names):
       'fever']
   
   i_disease = random.randint(0,len(diseases)-1)
-  i_name = random.randint(0,len(names)-1)
+  i_name = random.randint(0,len(player.names)-1)
   disease = diseases[i_disease]
-  name = names[i_name]
+  name = player.names[i_name]
   print("{} has {}".format(name,disease))
-  return (name, disease)
-  
-# TODO: Flesh out.
-def oxen_dies():
-  print("An oxen has died")
   return
+  
+def oxen_dies(player):
+  print("An oxen has died")
+  oxen_available = player.get_from_inventory('oxen')
+  if oxen_available > 1:
+    remaining = player.consume('oxen',1)
+    print("You have {} oxen remaining".format(remaining))
+    return False
+  else:
+    print("You do not have any oxen left")
+    print("You can no longer continue on the trail")
+    return True
 
-# TODO: Flesh out.
-def theif_attacks():
+def thief_attacks(player):
   random.seed()
   amount = random.randint(10,25)
-  print("A theif has stolen {} pounds of food".format(amount))
-  return amount
+  food_available = player.get_from_inventory('food')
+  if food_available >= amount:
+    print("A thief has stolen {} pounds of food".format(amount))
+    remaining = player.consume('food',amount)
+    print("You have {} pounds of food remaining".format(remaining))
+  else:
+    print("A thief stole the remainder of your food")
+    player.consume('food',food_available)
+  return False
 
-# TODO: Flesh out.
-def wagon_breaks():
+def wagon_breaks(player):
   random.seed()
   parts = [
       'wheel',
@@ -63,10 +75,18 @@ def wagon_breaks():
   i_part = random.randint(0,len(parts)-1)
   part = parts[i_part]
   print("A wagon {} broke".format(part))
-  return
+  parts_available = player.get_from_inventory('parts')
+  if parts_available >= 1:
+    print("You were able to repair it with a spare part")
+    remaining = player.consume('parts',1)
+    print("You have {} spare part(s) remaining".format(remaining))
+    return False
+  else:
+    print("You do not have any spare parts to fix the wagon")
+    print("You can no longer continue on the trail")
+    return True
 
-# TODO: Flesh out.
-def bad_weather():
+def bad_weather(player):
   random.seed()
   
   # Weather event, days to wait
@@ -79,9 +99,23 @@ def bad_weather():
       ]
   i_event = random.randint(0,len(weather_events)-1)
   event = weather_events[i_event]
-  print("You have to halt your journey for {} days due to {}".format(event[1],event[0]))
-  return event
+  days = event[1]
+  name = event[0]
+  print("You have to halt your journey for {} days due to {}".format(days,name))
+  player.advance_time(days)
+  food_consumed = player.rations * days * player.members_alive
+  food_available = player.get_from_inventory('food')
+  if food_available >= food_consumed:
+    print("You consumed {} pounds of food".format(food_consumed))
+    remaining = player.consume('food',food_consumed)
+    print("You have {} pounds remaining".format(remaining))
+    return False
+  else:
+    print("You ran out of food")
+    print("All party members starved")
+    return True
 
-# TODO: Optional.  
-def fortune():
-  pass
+# TODO: Flesh out - optional.  
+def fortune(player):
+  print("Fortune event here")
+  return False
