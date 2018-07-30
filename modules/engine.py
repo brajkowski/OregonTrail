@@ -18,8 +18,16 @@ class engine():
   def run_tests(self):
     self.player.load_debug()
     while not self.should_close:
-      self.take_turn()
-      misfortunes.randomize(self.player)
+      self.player.print_status()
+      test = input("1 to make sick, 2 add kits, q to quit")
+      #misfortunes.randomize(self.player)
+      if test == 'q':
+        self.should_close = True
+      if test == '1':
+        self.should_close = misfortunes.sickness(self.player)
+      if test == '2':
+        self.player.update_inventory('kits',2)
+      self.player.heal_all_if_sick()
 
     pass
   
@@ -27,11 +35,11 @@ class engine():
     self.messages.print_message('welcome')
     sleep(self.sleep)
     print('What is your name?')
-    self.player.names.append(io.get_input_string())
+    self.player.members.append(player.member(io.get_input_string(),is_leader=True))
     counts = ['first','second','third','fourth']
     for i in range(4):
       print('Please enter the name of your {} party member.'.format(counts[i]))
-      self.player.names.append(io.get_input_string())
+      self.player.members.append(player.member(io.get_input_string()))
   
   def start_store(self):
     self.gui.update()
@@ -207,8 +215,8 @@ class engine():
 
 def main():
   e = engine()
-  e.run()
-  #e.run_tests()
+  #e.run()
+  e.run_tests()
   
   
 if __name__ == "__main__":

@@ -33,12 +33,24 @@ def sickness(player):
       'dysentery',
       'fever']
   
+  choices = []
+  for i in range(len(player.members)):
+    if player.members[i].is_alive:
+      choices.append(i)
   i_disease = random.randint(0,len(diseases)-1)
-  i_name = random.randint(0,len(player.names)-1)
+  i_name = random.choice(choices)
   disease = diseases[i_disease]
-  name = player.names[i_name]
+  name = player.members[i_name].name
   print("{} has {}".format(name,disease))
-  return
+  should_end_game = player.members[i_name].gets_sick(disease)
+  if player.get_from_inventory('kits') > 0:
+    player.members[i_name].use_med_kit()
+    remaining = player.consume('kits',1)
+    print("You used a med-kit on {}".format(name))
+    print("You have {} med-kit(s) remaining".format(remaining))
+  if should_end_game:
+    print("You cannot continue on the trail without the leader")
+  return should_end_game
   
 def oxen_dies(player):
   print("An oxen has died")

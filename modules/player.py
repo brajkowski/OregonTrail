@@ -1,6 +1,56 @@
 import datetime
 import locations
 
+class member():
+  def __init__(self, name, is_leader=False):
+    self.name = name
+    self.is_alive = True
+    self.is_sick = False
+    self.status = "Healthy"
+    self.is_leader = is_leader
+    self.days_to_healthy = 5
+    
+  def gets_sick(self,sickness):
+    self.days_to_healthy = 5
+    if self.is_sick:
+      should_end_game = self.dies(sickness)
+      return should_end_game
+    else:
+      self.is_sick = True
+      self.status = "Has {}".format(sickness)
+      return False
+    
+  def dies(self, sickness):
+    print("{} died from multiple illnesses".format(self.name))
+    self.status = "Deceased"
+    self.is_alive = False
+    if self.is_leader:
+      return True
+    else:
+      return False
+    
+  def use_med_kit(self):
+    self.days_to_healthy = 2
+    
+  def heal_if_sick(self):
+    if self.is_sick:
+      self.days_to_healthy -= 1
+      if self.days_to_healthy == 0:
+        self.status = "Healthy"
+        self.days_to_healthy = 5
+        self.is_sick = False
+        print("{} is back to full health".format(self.name))
+        
+  def heal_to_full_if_sick(self):
+    if self.is_sick:
+      self.days_to_healthy = 5
+      self.status = "Healthy"
+      self.is_sick = False
+      print("{} is back to full health".format(self.name))
+      
+  def print_status(self):
+    print("{}: {} (Leader={}, Days to FH={})".format(self.name,self.status,self.is_leader,self.days_to_healthy))
+
 class player():
   def __init__(self):
     self.inventory = {
@@ -12,7 +62,7 @@ class player():
         'parts':0
         }
     self.next_location = 0
-    self.names = []
+    self.members = []
     self.current_date = datetime.date(1847,3,3)
     self.miles_traveled = 0
     self.locations = locations.parse_locations()
@@ -25,11 +75,11 @@ class player():
         'money':200,
         'bullets':1000,
         'oxen':10,
-        'kits':10,
+        'kits':0,
         'parts':10
         }
     self.next_location = 0
-    self.names = ['This','Is','A','Debug','Test']
+    self.members = [member('This',is_leader=True),member('Is'),member('A'),member('Debug'),member('Test')]
     self.current_date = datetime.date(1847,4,9)
     self.miles_traveled = 0
     self.locations = locations.parse_locations()
@@ -73,6 +123,10 @@ class player():
     print('Bullets:',self.inventory['bullets'])
     print('Cash: ${}'.format(self.inventory['money']))
     print('----------------------------')
+    print("--DEBUG MEMBER STATUS--")
+    for member in self.members:
+      member.print_status()
+    print("----")
     
   def print_inventory(self):
     pairs = list(self.inventory.items())
@@ -100,6 +154,14 @@ class player():
   
   def travel(self, miles):
     self.miles_traveled += miles
+    
+  def heal_all_if_sick(self):
+    for member in self.members:
+      member.heal_if_sick()
+  
+  def heal_all_to_full_if_sick(self):
+    for member in self.members:
+      member.heal_to_full_if_sick()
   
     
   
