@@ -22,7 +22,6 @@ def randomize(player):
   else:
     return misfortune(player)
 
-# TODO: Flesh out.
 def sickness(player):
   random.seed()
   diseases = [

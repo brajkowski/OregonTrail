@@ -15,19 +15,18 @@ class engine():
     self.should_close = False
     self.rations = 3
     
-  def run_tests(self):
+  def run_tests(self, debug=False):
     self.player.load_debug()
     while not self.should_close:
-      self.player.print_status()
-      test = input("1 to make sick, 2 add kits, q to quit")
-      #misfortunes.randomize(self.player)
-      if test == 'q':
-        self.should_close = True
-      if test == '1':
-        self.should_close = misfortunes.sickness(self.player)
-      if test == '2':
-        self.player.update_inventory('kits',2)
-      self.player.heal_all_if_sick()
+      self.take_turn()
+      if debug:
+        debug_input = input("1 to make sick, 2 add kits, q to quit \n $$>")
+        if debug_input == 'q':
+          self.should_close = True
+        if debug_input == '1':
+          self.should_close = misfortunes.sickness(self.player)
+        if debug_input == '2':
+          self.player.update_inventory('kits',2)
 
     pass
   
@@ -169,7 +168,7 @@ class engine():
       total_food = current_food + hunted_food
       self.player.update_inventory('food',total_food)
     self.player.advance_time(1)
-    # TODO: Add recovery.
+    self.player.heal_all_to_full_if_sick()
       
   def travel(self):
     random.seed()
@@ -189,6 +188,7 @@ class engine():
     self.player.advance_time(days_elapsed)
     self.player.consume('food', food_consumed)
     self.player.travel(miles_to_travel)
+    self.player.heal_all_if_sick()
     
   def rest(self):
     random.seed()
@@ -199,11 +199,10 @@ class engine():
     
     self.player.advance_time(days_to_sleep)
     self.player.consume('food', food_consumed)
-    # TODO: Add recovery.
+    self.player.heal_all_to_full_if_sick()
     
   def run(self):
     self.new_game()
-    #sleep(self.sleep)
     self.start_store()
     self.pick_start_date()
     while not self.should_close:

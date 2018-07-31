@@ -8,10 +8,10 @@ class member():
     self.is_sick = False
     self.status = "Healthy"
     self.is_leader = is_leader
-    self.days_to_healthy = 5
+    self.turns_to_healthy = 5
     
   def gets_sick(self,sickness):
-    self.days_to_healthy = 5
+    self.turns_to_healthy = 5
     if self.is_sick:
       should_end_game = self.dies(sickness)
       return should_end_game
@@ -30,26 +30,26 @@ class member():
       return False
     
   def use_med_kit(self):
-    self.days_to_healthy = 2
+    self.turns_to_healthy = 2
     
   def heal_if_sick(self):
     if self.is_sick:
-      self.days_to_healthy -= 1
-      if self.days_to_healthy == 0:
+      self.turns_to_healthy -= 1
+      if self.turns_to_healthy == 0:
         self.status = "Healthy"
-        self.days_to_healthy = 5
+        self.turns_to_healthy = 5
         self.is_sick = False
         print("{} is back to full health".format(self.name))
         
   def heal_to_full_if_sick(self):
     if self.is_sick:
-      self.days_to_healthy = 5
+      self.turns_to_healthy = 5
       self.status = "Healthy"
       self.is_sick = False
       print("{} is back to full health".format(self.name))
       
   def print_status(self):
-    print("{}: {} (Leader={}, Days to FH={})".format(self.name,self.status,self.is_leader,self.days_to_healthy))
+    print("{}: {} (Leader={}, Days to FH={})".format(self.name,self.status,self.is_leader,self.turns_to_healthy))
 
 class player():
   def __init__(self):
@@ -71,7 +71,7 @@ class player():
     self.rations = 3
   
   def load_debug(self):
-    self.inventory = {'food':500,
+    self.inventory = {'food':10000000,
         'money':200,
         'bullets':1000,
         'oxen':10,
