@@ -29,6 +29,14 @@ class member():
     else:
       return False
     
+  def drown(self):
+    print("{} drowned".format(self.name))
+    self.is_alive = False
+    if self.is_leader:
+      return True
+    else:
+      return False
+    
   def use_med_kit(self):
     self.turns_to_healthy = 2
     

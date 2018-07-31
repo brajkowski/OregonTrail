@@ -1,4 +1,5 @@
 What would you like to do?
-  XXX FLESH OUT XXX
   (1) Rest
-  (2) Continue on the trail
+  (2) Attempt to ford the river
+  (3) Caulk the wagon and float it
+  (4) Take the ferry ($5)

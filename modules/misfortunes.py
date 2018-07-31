@@ -190,6 +190,52 @@ def raider_attack(player):
       print("The raiders stole a quarter of your money")
       current_money = player.get_from_inventory('money')
       stolen_money = int(current_money / 4)
-      player.consume('money',stolen_money)      
+      player.consume('money',stolen_money)
+
+def failed_river(player):
+  print("Your attempt to cross the river failed")
+  chance_drowning = 20
+  chance_goods = [
+      70,
+      50,
+      20
+      ]
+  
+  n_drowning = list(range(1,chance_drowning+1))
+  n_goods = []
+  for chance in chance_goods:
+    n_goods.append(list(range(1,chance+1)))
+  
+  did_lose_good = []
+  for n in n_goods:
+    if random.randint(1,100) in n:  
+      did_lose_good.append(True)
+    else:
+      did_lose_good.append(False)
+  did_drown = False
+  if random.randint(1,100) in n_drowning:
+    did_drown = True
+    
+  if did_drown:
+    members = player.members
+    member = random.choice(members)
+    member.drown()
+  
+  # Inventory key, max amount lost
+  options = [('food',100),('bullets',100),('oxen',2),('parts',2)]  
+  for did_lose in did_lose_good:
+    if did_lose:
+      option = random.choice(options)
+      options.remove(option)
+      amount = random.randint(1,option[1])
+      if player.can_consume(option[0],amount):
+        if option[0] == 'food':
+          print("You lost {} pounds of food".format(amount))
+        else:
+          print("You lost {} {}".format(amount,option[0]))
+      
+      
+      
+  
   
     

@@ -17,17 +17,18 @@ class engine():
     
   def run_tests(self, debug=False):
     self.player.load_debug()
-    while not self.should_close:
-      #self.player.print_status()
-      self.take_turn()
-      if debug:
-        debug_input = input("1 to make sick, 2 add kits, q to quit \n $$>")
-        if debug_input == 'q':
-          self.should_close = True
-        if debug_input == '1':
-          self.should_close = misfortunes.sickness(self.player)
-        if debug_input == '2':
-          self.player.update_inventory('kits',2)
+    #while not self.should_close:
+    for location in self.player.locations:
+      if location.kind == 'River':
+        self.at_river(location)
+        if debug:
+          debug_input = input("1 to make sick, 2 add kits, q to quit \n $$>")
+          if debug_input == 'q':
+            self.should_close = True
+          if debug_input == '1':
+            self.should_close = misfortunes.sickness(self.player)
+          if debug_input == '2':
+            self.player.update_inventory('kits',2)
       
   def new_game(self):
     self.messages.print_message('welcome')
@@ -192,7 +193,7 @@ class engine():
       if location.kind == 'Fort':
         self.at_fort()
       elif location.kind == 'River':
-        self.at_river()
+        self.at_river(location)
       elif location.kind == None:
         self.at_landmark()
       
@@ -218,19 +219,38 @@ class engine():
         self.store(fort=True)
       elif response == 3:
         return
-        
-  # TODO: Flesh out.  
-  def at_river(self):
+
+  def at_river(self, location):
+    river_height = location.height
+    print("River Height: {} feet".format(river_height))
     while True:
       self.messages.print_message('river_options')
-      options = [1,2]
+      options = [1,2,3,4]
       response = io.get_input_int_protected(options)
       if response == 1:
         self.rest()
       elif response == 2:
-          return
-  
-  # TODO: FLesh out.  
+          if river_height > 3:
+            misfortunes.failed_river(self.player)
+          else:
+            print("You successfully forded the river")
+            return
+      elif response == 3:
+          chance = 65
+          n_chance = list(range(1,chance + 1))
+          if random.randint(1,100) in n_chance:
+            print("You successfully floated the river")
+            return
+          else:
+            misfortunes.failed_river(self.player)
+      elif response == 4:
+          if self.player.can_consume('money',5):
+            print("You took the ferry across")
+            self.player.consume('money',5)
+            return
+          else:
+            print("You do not have enough money")
+   
   def at_landmark(self):
     while True:
       self.messages.print_message('landmark_options')
@@ -266,7 +286,7 @@ class engine():
 def main():
   e = engine()
   #e.run()
-  e.run_tests(debug=True)
+  e.run_tests(debug=False)
   
   
 if __name__ == "__main__":
