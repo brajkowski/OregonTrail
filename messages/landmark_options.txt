@@ -1,0 +1,3 @@
+What would you like to do?
+  (1) Rest
+  (2) Continue on the trail

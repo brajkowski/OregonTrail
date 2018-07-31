@@ -4,11 +4,15 @@ class messages():
         'welcome':'../messages/welcome.txt',
         'store_welcome':'../messages/store_welcome.txt',
         'turn_options':'../messages/turn_options.txt',
-        'rations':'../messages/rations.txt'
+        'rations':'../messages/rations.txt',
+        'fort_options':'../messages/fort_options.txt',
+        'landmark_options':'../messages/landmark_options.txt',
+        'river_options':'../messages/river_options.txt'
         }
     
     self.__file_paths_parsed = {
         'start_store':'../messages/start_store.txt',
+        'fort_store':'../messages/fort_store.txt',
         'locations':'../messages/locations.txt',
         }
     

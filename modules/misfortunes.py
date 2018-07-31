@@ -128,7 +128,6 @@ def bad_weather(player):
     print("All party members starved")
     return True
 
-# TODO: Flesh out - optional.  
 def fortune(player):
   treasures = [
       ('food',random.randint(100,500)),

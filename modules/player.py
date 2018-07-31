@@ -54,9 +54,9 @@ class member():
 class player():
   def __init__(self):
     self.inventory = {
-        'food':0.0,
-        'money':1400.0,
-        'bullets':0.0,
+        'food':0,
+        'money':1400.00,
+        'bullets':0,
         'oxen':0,
         'kits':0,
         'parts':0
@@ -71,11 +71,11 @@ class player():
     self.rations = 3
   
   def load_debug(self):
-    self.inventory = {'food':10000000,
-        'money':200,
+    self.inventory = {'food':1000,
+        'money':5000,
         'bullets':1000,
         'oxen':10,
-        'kits':0,
+        'kits':10,
         'parts':10
         }
     self.next_location = 0
@@ -110,10 +110,29 @@ class player():
   def add_to_inventory(self,key,amount):
     self.inventory[key] += amount
   
-  # Deprecated.
-  #def spend_money(self,value):
-  #  new_value = self.inventory['money'] - value
-  #  self.inventory['money'] = new_value
+  def can_add_to_inventory(self,key,amount):
+    if key == 'oxen':
+      limit = 10
+      current = self.get_from_inventory('oxen')
+      if self.get_from_inventory('oxen') + amount > limit:
+        print('You cannot have that many oxen')
+        print('You have {} oxen and have a total of {} spots'.format(current,limit))
+        print('Please enter a new amount')
+        return False
+      else:
+        return True
+    elif key == 'food':
+      limit = 1000
+      current = self.get_from_inventory('food')
+      if self.get_from_inventory('food') + amount > limit:
+        print('You cannot hold that much food')
+        print('You have {} pounds and can hold {} pounds'.format(current,limit))
+        print('Please enter a new amount')
+        return False
+      else:
+        return True
+    else:
+      return True
    
   def print_status(self):
     #miles_to_next = self.locations[self.next_location].mileage - self.miles_traveled

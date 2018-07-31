@@ -18,10 +18,8 @@ class engine():
   def run_tests(self, debug=False):
     self.player.load_debug()
     while not self.should_close:
-      self.player.print_status()
-      misfortunes.fortune(self.player)
-      
-      #self.take_turn()
+      #self.player.print_status()
+      self.take_turn()
       if debug:
         debug_input = input("1 to make sick, 2 add kits, q to quit \n $$>")
         if debug_input == 'q':
@@ -31,7 +29,6 @@ class engine():
         if debug_input == '2':
           self.player.update_inventory('kits',2)
       
-
   def new_game(self):
     self.messages.print_message('welcome')
     sleep(self.sleep)
@@ -42,11 +39,12 @@ class engine():
       print('Please enter the name of your {} party member.'.format(counts[i]))
       self.player.members.append(player.member(io.get_input_string()))
   
-  def start_store(self):
-    self.gui.update()
-    key = 'start_store'
-    self.messages.print_message('store_welcome')
-    sleep(self.sleep)
+  def store(self, fort=False):
+    if not fort:
+      key = 'start_store'
+      self.messages.print_message('store_welcome')
+    elif fort:
+      key ='fort_store'
     
     message_count = self.messages.get_message_parsed_count(key)
     
@@ -55,45 +53,55 @@ class engine():
     prices = [40,0.5,2,10,15]
     quants = [2,1,20,1,1]
     subtotal = 0.0
+    if fort:
+      prices = [120,1.5,6,30,45]
+      quants = [1,1,20,1,1]
     
     # Handle special case for buying yokes.
-    while True:
-      try:
-        self.messages.print_message_parsed(key,0)
-        response = io.get_input_int(low=0)
-        amount = response * prices[0]
-        if not(100 <= amount and amount <= 200):
-          raise Exception()
-        break 
-      except Exception:
-        print("You spent ${} on oxen.".format(amount))
-        print()
-    subtotal += amount
-    self.player.update_inventory(keys[0],response*quants[0])
-    self.player.consume('money', amount)
-    print("Sub-total: ${}".format(subtotal))
+    if not fort:
+      while True:
+        try:
+          self.messages.print_message_parsed(key,0)
+          response = io.get_input_int(low=0)
+          amount = response * prices[0]
+          if not(100 <= amount and amount <= 200):
+            raise Exception()
+          break 
+        except Exception:
+          print("You tried to spend ${} on oxen.".format("%.2f" %amount))
+      subtotal += amount
+      self.player.update_inventory(keys[0],response*quants[0])
+      self.player.consume('money', amount)
+      print("Sub-total: ${}".format("%.2f" %subtotal))
     
     # Handle the rest of the store buying options.
-    for i in range(1,message_count):
+    if not fort:
+      start_range = range(1,message_count)
+    elif fort:
+      start_range = range(0,message_count)
+    for i in start_range:
       self.messages.print_message_parsed(key,i)
       while True:
         try:
           response = io.get_input_int(low=0)
+          quant = response * quants[i]
           amount = response * prices[i]
           if not self.player.can_consume('money',amount):
-            raise Exception()
+            raise AssertionError
+          if not self.player.can_add_to_inventory(keys[i],quant):
+            raise ValueError
           break
-        except Exception:
+        except AssertionError:
           print("You don't enough money, please enter a new amount.")
+        except ValueError:
+          pass
       subtotal += amount
-      self.player.update_inventory(keys[i],response*quants[i])
-      self.player.consume('money', amount)
-      
-      print("Sub-total: ${}".format(subtotal))
-    print("Total: ${}".format(subtotal))
+      self.player.add_to_inventory(keys[i],response*quants[i])
+      self.player.consume('money', amount)      
+      print("Sub-total: ${}".format("%.2f" %subtotal))
+    print("Total: ${}".format("%.2f" %subtotal))
     
-    self.player.print_inventory()
-      
+    
   def pick_start_date(self):
     print('Would you like to take off on {} (1) or on a different date (2)?'.format(self.player.current_date))
     options = [1,2]
@@ -140,8 +148,6 @@ class engine():
     if end_from_misfortune:
       self.should_close = True
       
-  
-  # TODO: Develop turn options.
   def hunt(self):
     current_food = self.player.get_from_inventory('food')
     hunted_food = hunting.hunt(self.player)
@@ -171,7 +177,8 @@ class engine():
       self.player.update_inventory('food',total_food)
     self.player.advance_time(1)
     self.player.heal_all_to_full_if_sick()
-      
+  
+  # TODO: Consider adjusting food for short travel days.    
   def travel(self):
     random.seed()
     miles_to_travel = random.randint(70,140)
@@ -181,6 +188,14 @@ class engine():
     if miles_to_travel > self.player.miles_to_next_mark:
       location = self.player.get_next_location()
       print('You were prepared to travel {} miles but arrived at {}'.format(miles_to_travel, location.name))
+      
+      if location.kind == 'Fort':
+        self.at_fort()
+      elif location.kind == 'River':
+        self.at_river()
+      elif location.kind == None:
+        self.at_landmark()
+      
       miles_to_travel = self.player.miles_to_next_mark
       self.player.update_next_location()
     else:  
@@ -191,6 +206,40 @@ class engine():
     self.player.consume('food', food_consumed)
     self.player.travel(miles_to_travel)
     self.player.heal_all_if_sick()
+    
+  def at_fort(self):
+    while True:
+      self.messages.print_message('fort_options')
+      options = [1,2,3]
+      response = io.get_input_int_protected(options)
+      if response == 1:
+        self.rest()
+      elif response == 2:
+        self.store(fort=True)
+      elif response == 3:
+        return
+        
+  # TODO: Flesh out.  
+  def at_river(self):
+    while True:
+      self.messages.print_message('river_options')
+      options = [1,2]
+      response = io.get_input_int_protected(options)
+      if response == 1:
+        self.rest()
+      elif response == 2:
+          return
+  
+  # TODO: FLesh out.  
+  def at_landmark(self):
+    while True:
+      self.messages.print_message('landmark_options')
+      options = [1,2]
+      response = io.get_input_int_protected(options)
+      if response == 1:
+        self.rest()
+      elif response == 2:
+        return
     
   def rest(self):
     random.seed()
@@ -205,7 +254,7 @@ class engine():
     
   def run(self):
     self.new_game()
-    self.start_store()
+    self.store()
     self.pick_start_date()
     while not self.should_close:
       self.take_turn()

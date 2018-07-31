@@ -11,7 +11,6 @@ class location():
     print('Kind:', self.kind)
     print('Height:', self.height)
 
-
 def parse_locations():
   path = '../messages/locations.txt'
   with open(path, 'r') as file:
