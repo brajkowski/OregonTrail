@@ -13,29 +13,20 @@ class member():
   def gets_sick(self,sickness):
     self.turns_to_healthy = 5
     if self.is_sick:
-      should_end_game = self.dies(sickness)
-      return should_end_game
+      self.dies(sickness)
     else:
       self.is_sick = True
       self.status = "Has {}".format(sickness)
-      return False
     
   def dies(self, sickness):
     print("{} died from multiple illnesses".format(self.name))
     self.status = "Deceased"
     self.is_alive = False
-    if self.is_leader:
-      return True
-    else:
-      return False
     
   def drown(self):
     print("{} drowned".format(self.name))
+    self.status = "Deceased"
     self.is_alive = False
-    if self.is_leader:
-      return True
-    else:
-      return False
     
   def use_med_kit(self):
     self.turns_to_healthy = 2
@@ -80,11 +71,11 @@ class player():
   
   def load_debug(self):
     self.inventory = {'food':1000,
-        'money':5000,
-        'bullets':1000,
+        'money':1000,
+        'bullets':200,
         'oxen':10,
-        'kits':10,
-        'parts':10
+        'kits':2,
+        'parts':2
         }
     self.next_location = 0
     self.members = [member('This',is_leader=True),member('Is'),member('A'),member('Debug'),member('Test')]
@@ -144,6 +135,7 @@ class player():
    
   def print_status(self):
     #miles_to_next = self.locations[self.next_location].mileage - self.miles_traveled
+    print()
     print('---------- Status ----------')
     print('Date:', self.current_date)
     print('Miles Traveled:', self.miles_traveled)
@@ -157,6 +149,7 @@ class player():
     for member in self.members:
       member.print_status()
     print("----")
+    self.print_inventory()
     
   def print_inventory(self):
     pairs = list(self.inventory.items())
@@ -192,6 +185,21 @@ class player():
   def heal_all_to_full_if_sick(self):
     for member in self.members:
       member.heal_to_full_if_sick()
+      
+  def check_for_end_game(self):
+    if self.get_from_inventory('food') <= 0:
+      print("You ran out of food")
+      print("Your party starved to death")
+      return True
+    if self.get_from_inventory('oxen') <= 0:
+      print("You do not have any oxen left")
+      print("You can no longer travel the trail")
+      return True
+    for member in self.members:
+      if member.is_leader and not member.is_alive:
+        print("You cannot continue on the trail without your leader")
+        return True
+    return False
   
     
   

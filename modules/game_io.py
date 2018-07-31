@@ -48,7 +48,7 @@ class messages():
 
   def print_message(self,key):
     print(self.__messages.get(key))
-    print('\n')
+    #print('\n')
     
   def print_message_parsed(self,key,index):
     message = self.__messages_parsed.get(key)
@@ -73,6 +73,7 @@ def get_input_string_protected(options):
       break
     except Exception:
       print('Please enter a valid option.')
+  print()
   return response
 
 def get_input_int(low=None,high=None):
@@ -102,6 +103,7 @@ def get_input_int_protected(options):
       break
     except Exception:
       print('Please enter a valid option.')
+  print()
   return response
 
 

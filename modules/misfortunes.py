@@ -19,10 +19,7 @@ def randomize(player):
       ]
   i_misfortune = random.randint(0,len(misfortunes)-1)
   misfortune = misfortunes[i_misfortune]
-  if misfortune == sickness:
-    return misfortune(player)
-  else:
-    return misfortune(player)
+  misfortune(player)
 
 def sickness(player):
   random.seed()
@@ -43,15 +40,12 @@ def sickness(player):
   disease = diseases[i_disease]
   name = player.members[i_name].name
   print("{} has {}".format(name,disease))
-  should_end_game = player.members[i_name].gets_sick(disease)
+  player.members[i_name].gets_sick(disease)
   if player.get_from_inventory('kits') > 0:
     player.members[i_name].use_med_kit()
     remaining = player.consume('kits',1)
     print("You used a med-kit on {}".format(name))
     print("You have {} med-kit(s) remaining".format(remaining))
-  if should_end_game:
-    print("You cannot continue on the trail without the leader")
-  return should_end_game
   
 def oxen_dies(player):
   print("An oxen has died")
@@ -59,11 +53,6 @@ def oxen_dies(player):
   if oxen_available > 1:
     remaining = player.consume('oxen',1)
     print("You have {} oxen remaining".format(remaining))
-    return False
-  else:
-    print("You do not have any oxen left")
-    print("You can no longer continue on the trail")
-    return True
 
 def thief_attacks(player):
   random.seed()
@@ -76,7 +65,6 @@ def thief_attacks(player):
   else:
     print("A thief stole the remainder of your food")
     player.consume('food',food_available)
-  return False
 
 def wagon_breaks(player):
   random.seed()
@@ -93,7 +81,6 @@ def wagon_breaks(player):
     print("You were able to repair it with a spare part")
     remaining = player.consume('parts',1)
     print("You have {} spare part(s) remaining".format(remaining))
-    return False
   else:
     print("You do not have any spare parts to fix the wagon")
     print("You can no longer continue on the trail")
@@ -122,11 +109,9 @@ def bad_weather(player):
     print("You consumed {} pounds of food".format(food_consumed))
     remaining = player.consume('food',food_consumed)
     print("You have {} pounds remaining".format(remaining))
-    return False
   else:
-    print("You ran out of food")
-    print("All party members starved")
-    return True
+    print("You consume {} pounds of food".format(food_available))
+    player.consume('food',food_available)
 
 def fortune(player):
   treasures = [
@@ -149,7 +134,7 @@ def fortune(player):
       print("You found {} pounds of food in an abandoned wagon".format(found[1]))
       player.add_to_inventory('food',found[1])
   elif found[0] == 'money':
-    print("You found ${} in an abandoned wagon".format(found[1]))
+    print("You found ${} in an abandoned wagon".format("%.2f" %found[1]))
     player.add_to_inventory('money',found[1])
   else:
     print("You found {} {} in an abandoned wagon".format(found[1],found[0]))
@@ -195,16 +180,12 @@ def raider_attack(player):
 def failed_river(player):
   print("Your attempt to cross the river failed")
   chance_drowning = 20
-  chance_goods = [
-      70,
-      50,
-      20
-      ]
+  chance_goods = [70,50,20]
   
-  n_drowning = list(range(1,chance_drowning+1))
+  n_drowning = list(range(1,chance_drowning + 1))
   n_goods = []
   for chance in chance_goods:
-    n_goods.append(list(range(1,chance+1)))
+    n_goods.append(list(range(1,chance + 1)))
   
   did_lose_good = []
   for n in n_goods:
@@ -217,8 +198,11 @@ def failed_river(player):
     did_drown = True
     
   if did_drown:
-    members = player.members
-    member = random.choice(members)
+    choices = []
+    for member in player.members:
+      if member.is_alive:
+        choices.append(member)
+    member = random.choice(choices)
     member.drown()
   
   # Inventory key, max amount lost
@@ -231,8 +215,10 @@ def failed_river(player):
       if player.can_consume(option[0],amount):
         if option[0] == 'food':
           print("You lost {} pounds of food".format(amount))
+          player.consume('food',amount)
         else:
           print("You lost {} {}".format(amount,option[0]))
+          player.consume(option[0],amount)
       
       
       

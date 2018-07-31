@@ -17,18 +17,16 @@ class engine():
     
   def run_tests(self, debug=False):
     self.player.load_debug()
-    #while not self.should_close:
-    for location in self.player.locations:
-      if location.kind == 'River':
-        self.at_river(location)
-        if debug:
-          debug_input = input("1 to make sick, 2 add kits, q to quit \n $$>")
-          if debug_input == 'q':
-            self.should_close = True
-          if debug_input == '1':
-            self.should_close = misfortunes.sickness(self.player)
-          if debug_input == '2':
-            self.player.update_inventory('kits',2)
+    while not self.should_close:
+      self.take_turn()
+      if debug:
+        debug_input = input("$ ")
+        if debug_input == 'q':
+          self.should_close = True
+        if debug_input == '1':
+          self.should_close = misfortunes.sickness(self.player)
+        if debug_input == '2':
+          self.player.update_inventory('kits',2)
       
   def new_game(self):
     self.messages.print_message('welcome')
@@ -125,6 +123,7 @@ class engine():
     self.player.current_date = self.player.current_date.replace(day=response)
   
   def take_turn(self):
+    sleep(3)
     self.player.print_status()
     self.messages.print_message('turn_options')
     options = [1,2,3,4]
@@ -140,14 +139,20 @@ class engine():
     
     # Perform general turn events here.
     self.player.update_miles_to_next()
-    current_food = self.player.get_from_inventory('food')
-    if current_food <= 0:
-      print("You ran out of food")
-      print("Your party starved to death")
+    #current_food = self.player.get_from_inventory('food')
+    #if current_food <= 0:
+    #  print("You ran out of food")
+    #  print("Your party starved to death")
+    #  self.should_close = True
+    if self.player.check_for_end_game():
       self.should_close = True
-    end_from_misfortune = misfortunes.randomize(self.player)
-    if end_from_misfortune:
+      return
+    if misfortunes.randomize(self.player):
       self.should_close = True
+      return
+    if self.player.check_for_end_game():
+      self.should_close = True
+      return
       
   def hunt(self):
     current_food = self.player.get_from_inventory('food')
@@ -166,6 +171,7 @@ class engine():
       self.player.rations = 5
       
     food_consumed = self.player.members_alive * self.player.rations
+    print("You consumed {} pounds of food".format(food_consumed))
     current_food -= food_consumed
     
     if current_food + hunted_food > 1000:
