@@ -130,8 +130,31 @@ def bad_weather(player):
 
 # TODO: Flesh out - optional.  
 def fortune(player):
-  print("Fortune event here")
-  return False
+  treasures = [
+      ('food',random.randint(100,500)),
+      ('money',random.randint(200,500)),
+      ('bullets',random.randint(30,100)),
+      ('kits',random.randint(2,3)),
+      ('parts',random.randint(2,3)),
+      ]
+  found = random.choice(treasures)
+  if found[0] == 'food':
+    current_food = player.get_from_inventory('food')
+    if current_food + found[1] > 1000:
+      added_food = 1000 - current_food
+      print("You found {} pounds of food in an abandoned wagon".format(found[1]))
+      print("You can only add {} pounds to your wagon".format(added_food))
+      player.update_inventory('food',1000)
+      return
+    else:
+      print("You found {} pounds of food in an abandoned wagon".format(found[1]))
+      player.add_to_inventory('food',found[1])
+  elif found[0] == 'money':
+    print("You found ${} in an abandoned wagon".format(found[1]))
+    player.add_to_inventory('money',found[1])
+  else:
+    print("You found {} {} in an abandoned wagon".format(found[1],found[0]))
+    player.add_to_inventory(found[0],found[1])
 
 def raider_attack(player):
   mileage = player.mileage

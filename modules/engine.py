@@ -18,8 +18,8 @@ class engine():
   def run_tests(self, debug=False):
     self.player.load_debug()
     while not self.should_close:
-      misfortunes.raider_attack(self.player)
       self.player.print_status()
+      misfortunes.fortune(self.player)
       
       #self.take_turn()
       if debug:
