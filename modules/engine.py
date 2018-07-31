@@ -18,7 +18,10 @@ class engine():
   def run_tests(self, debug=False):
     self.player.load_debug()
     while not self.should_close:
-      self.take_turn()
+      misfortunes.raider_attack(self.player)
+      self.player.print_status()
+      
+      #self.take_turn()
       if debug:
         debug_input = input("1 to make sick, 2 add kits, q to quit \n $$>")
         if debug_input == 'q':
@@ -27,9 +30,8 @@ class engine():
           self.should_close = misfortunes.sickness(self.player)
         if debug_input == '2':
           self.player.update_inventory('kits',2)
+      
 
-    pass
-  
   def new_game(self):
     self.messages.print_message('welcome')
     sleep(self.sleep)
@@ -215,7 +217,7 @@ class engine():
 def main():
   e = engine()
   #e.run()
-  e.run_tests()
+  e.run_tests(debug=True)
   
   
 if __name__ == "__main__":

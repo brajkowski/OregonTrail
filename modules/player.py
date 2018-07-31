@@ -107,6 +107,9 @@ class player():
     self.inventory[key] = new_value
     return new_value
   
+  def add_to_inventory(self,key,amount):
+    self.inventory[key] += amount
+  
   # Deprecated.
   #def spend_money(self,value):
   #  new_value = self.inventory['money'] - value

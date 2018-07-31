@@ -1,4 +1,6 @@
 import random
+import puzzle
+from game_io import get_input_int_protected
 
 def randomize(player):
   random.seed()
@@ -130,3 +132,42 @@ def bad_weather(player):
 def fortune(player):
   print("Fortune event here")
   return False
+
+def raider_attack(player):
+  mileage = player.mileage
+  chance = int(((mileage / 100 - 4) ** 2 + 72) / ((mileage / 100 - 4) ** 2 + 12) - 1) + 1
+  numbers = list(range(1,chance + 1))
+  if random.randint(1,100) in numbers:
+    print("Raiders are attacking")
+    print("Do you want to run (1), fight (2), or surrender (3)?")
+    options = [1,2,3]
+    response = get_input_int_protected(options)
+    if response == 1:
+      if player.can_consume('oxen',1):  
+        player.consume('oxen',1)
+      if player.can_consume('food',10):
+        player.consume('food',10)
+      if player.can_consume('parts',1):
+        player.consume('parts',1)
+      print("You managed to escape, but you left behind 1 ox, 10 pounds of food, and a spare wagon part")
+    elif response == 2:
+      print("You must win the puzzle in order to defeat the raiders")
+      if puzzle.did_win():
+        print("You search the raiders and found 50 pounds of food and 50 bullets")
+        player.add_to_inventory('food',50)
+        player.add_to_inventory('bullets',50)
+      else:
+        print("The raiders stole a quarter of your money and 50 bullets")
+        current_money = player.get_from_inventory('money')
+        stolen_money = int(current_money / 4)
+        player.consume('money',stolen_money)
+        if player.can_consume('bullets',50):
+          player.consume('bullets',50)
+    elif response == 3:
+      print("You surrendered to the raiders")
+      print("The raiders stole a quarter of your money")
+      current_money = player.get_from_inventory('money')
+      stolen_money = int(current_money / 4)
+      player.consume('money',stolen_money)      
+  
+    
