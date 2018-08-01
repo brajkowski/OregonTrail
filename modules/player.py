@@ -50,6 +50,7 @@ class member():
   def print_status(self):
     print("{}: {} (Leader={}, Days to FH={})".format(self.name,self.status,self.is_leader,self.turns_to_healthy))
 
+
 class player():
   def __init__(self):
     self.inventory = {
@@ -134,7 +135,6 @@ class player():
       return True
    
   def print_status(self):
-    #miles_to_next = self.locations[self.next_location].mileage - self.miles_traveled
     print()
     print('---------- Status ----------')
     print('Date:', self.current_date)
