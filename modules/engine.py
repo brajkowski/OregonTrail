@@ -107,6 +107,7 @@ class engine():
     response = io.get_input_int_protected(options)
     if response == 1:
       return
+    print("You can choose to start between March 1 and May 1")
     print('Please enter what month you would like to start. \
           \n \t March (3) \
           \n \t April (4) \
@@ -117,6 +118,8 @@ class engine():
     days_allowed = 31
     if response == 4:
       days_allowed = 30
+    if response == 5:
+      days_allowed = 1
     self.player.current_date = self.player.current_date.replace(month=response)
     print('Please enter what day you would like to start.')
     response = io.get_input_int(low = 1, high = days_allowed)
@@ -291,8 +294,8 @@ class engine():
 
 def main():
   e = engine()
-  #e.run()
-  e.run_tests(debug=False)
+  e.run()
+  #e.run_tests(debug=False)
   
   
 if __name__ == "__main__":
