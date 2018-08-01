@@ -126,7 +126,7 @@ class engine():
     self.player.current_date = self.player.current_date.replace(day=response)
   
   def take_turn(self):
-    sleep(3)
+    sleep(self.sleep)
     self.player.print_status()
     self.messages.print_message('turn_options')
     options = [1,2,3,4]

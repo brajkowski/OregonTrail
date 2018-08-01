@@ -140,16 +140,14 @@ class player():
     print('Date:', self.current_date)
     print('Miles Traveled:', self.miles_traveled)
     print('Miles to next landmark:', self.miles_to_next_mark)
-    print('Food: {} pounds'.format(self.inventory['food']))
     print('Rations: {} pounds per person'.format(self.rations))
-    print('Bullets:',self.inventory['bullets'])
-    print('Cash: ${}'.format(self.inventory['money']))
+    print('Food: {} pounds'.format(self.inventory['food']))
+    print('Bullets: {}'.format(self.inventory['bullets']))
+    print('Cash: ${}'.format("%.2f" %self.inventory['money']))
+    print('Oxen: {}'.format(self.inventory['oxen']))
+    print('Med-Kits: {}'.format(self.inventory['kits']))
+    print('Spare Parts: {}'.format(self.inventory['parts']))
     print('----------------------------')
-    print("--DEBUG MEMBER STATUS--")
-    for member in self.members:
-      member.print_status()
-    print("----")
-    self.print_inventory()
     
   def print_inventory(self):
     pairs = list(self.inventory.items())
