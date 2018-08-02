@@ -30,8 +30,13 @@ class messages():
         }
     self.__file_paths_parsed = {
         'start_store':'../messages/start_store.txt',
-        'fort_store':'../messages/fort_store.txt',
         'locations':'../messages/locations.txt',
+        'fort_store_1':'../messages/fort_store_1.txt',
+        'fort_store_2':'../messages/fort_store_2.txt',
+        'fort_store_3':'../messages/fort_store_3.txt',
+        'fort_store_4':'../messages/fort_store_4.txt',
+        'fort_store_5':'../messages/fort_store_5.txt',
+        'fort_store_6':'../messages/fort_store_6.txt'
         }
     
     self.__messages = {}

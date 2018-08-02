@@ -17,6 +17,11 @@ class engine():
     
   def run_tests(self, debug=False):
     self.player.load_debug()
+    for i in range(6):
+      self.player.print_status()
+      print(self.store(fort=True))
+
+    """
     while not self.should_close:
       self.take_turn()
       if debug:
@@ -27,6 +32,7 @@ class engine():
           self.should_close = misfortunes.sickness(self.player)
         if debug_input == '2':
           self.player.update_inventory('kits',2)
+    """
       
   def new_game(self):
     self.messages.print_message('welcome')
@@ -43,7 +49,9 @@ class engine():
       key = 'start_store'
       self.messages.print_message('store_welcome')
     elif fort:
+      self.player.forts_visited += 1
       key ='fort_store'
+      key += "_{}".format(self.player.forts_visited)
     
     message_count = self.messages.get_message_parsed_count(key)
     
@@ -53,9 +61,13 @@ class engine():
     quants = [2,1,20,1,1]
     subtotal = 0.0
     if fort:
-      prices = [120,1.5,6,30,45]
+      increase = self.player.forts_visited * 0.25
+      prices[0] = round(prices[0] / 2 + increase * prices[0],2)
+      for i in range(1,len(prices)):
+        prices[i] += round(prices[i] * increase,2)
+      #prices = [120,1.5,6,30,45]
       quants = [1,1,20,1,1]
-    
+    print(prices)
     # Handle special case for buying yokes.
     if not fort:
       while True:
@@ -294,8 +306,8 @@ class engine():
 
 def main():
   e = engine()
-  e.run()
-  #e.run_tests(debug=False)
+  #e.run()
+  e.run_tests(debug=False)
   
   
 if __name__ == "__main__":

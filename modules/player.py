@@ -69,14 +69,15 @@ class player():
     self.members_alive = 5
     self.update_miles_to_next()
     self.rations = 3
+    self.forts_visited = 0
   
   def load_debug(self):
-    self.inventory = {'food':1000,
-        'money':1000,
-        'bullets':200,
-        'oxen':10,
-        'kits':2,
-        'parts':2
+    self.inventory = {'food':0,
+        'money':10000000,
+        'bullets':0,
+        'oxen':0,
+        'kits':0,
+        'parts':0
         }
     self.next_location = 0
     self.members = [member('This',is_leader=True),member('Is'),member('A'),member('Debug'),member('Test')]

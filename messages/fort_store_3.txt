@@ -1,0 +1,15 @@
+You can buy indiviual oxen.
+Each ox is $50.
+How many oxen would you like to buy?
+
+Food is $0.88 per pound.
+How many pounds would you like to buy?
+
+A box of 20 bullets costs $3.50.
+How many boxes would you like to buy?
+
+Spare wagon parts cost $17.50 each.
+How many spare parts would you like to buy?
+
+Medical kits cost $26.25 each.
+How many medical kits would you like to buy?
