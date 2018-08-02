@@ -17,13 +17,11 @@ class engine():
     
   def run_tests(self, debug=False):
     self.player.load_debug()
-    for i in range(6):
-      self.player.print_status()
-      print(self.store(fort=True))
-
-    """
     while not self.should_close:
-      self.take_turn()
+      self.player.print_status()
+      self.player.advance_time(14)
+      self.should_close = self.player.check_for_end_game()      
+      #self.take_turn()
       if debug:
         debug_input = input("$ ")
         if debug_input == 'q':
@@ -32,7 +30,6 @@ class engine():
           self.should_close = misfortunes.sickness(self.player)
         if debug_input == '2':
           self.player.update_inventory('kits',2)
-    """
       
   def new_game(self):
     self.messages.print_message('welcome')

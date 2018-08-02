@@ -64,6 +64,7 @@ class player():
     self.next_location = 0
     self.members = []
     self.current_date = datetime.date(1847,3,3)
+    self.end_date = datetime.date(1847,11,30)
     self.miles_traveled = 0
     self.locations = locations.parse_locations()
     self.members_alive = 5
@@ -72,16 +73,17 @@ class player():
     self.forts_visited = 0
   
   def load_debug(self):
-    self.inventory = {'food':0,
+    self.inventory = {'food':1000,
         'money':10000000,
-        'bullets':0,
-        'oxen':0,
-        'kits':0,
-        'parts':0
+        'bullets':100,
+        'oxen':10,
+        'kits':2,
+        'parts':2
         }
     self.next_location = 0
     self.members = [member('This',is_leader=True),member('Is'),member('A'),member('Debug'),member('Test')]
     self.current_date = datetime.date(1847,4,9)
+    self.end_date = datetime.date(1847,11,30)
     self.miles_traveled = 0
     self.locations = locations.parse_locations()
     self.members_alive = 5
@@ -198,6 +200,12 @@ class player():
       if member.is_leader and not member.is_alive:
         print("You cannot continue on the trail without your leader")
         return True
+
+    if self.current_date >= self.end_date:
+      print("You did not make it to Oregon City by {}".format(self.end_date))
+      print("Your party froze to death on the trail")
+      return True
+    
     return False
   
     
