@@ -71,6 +71,7 @@ class player():
     self.update_miles_to_next()
     self.rations = 3
     self.forts_visited = 0
+    self.win_mileage = 2040
   
   def load_debug(self):
     self.inventory = {'food':1000,
@@ -89,7 +90,9 @@ class player():
     self.members_alive = 5
     self.update_miles_to_next()
     self.rations = 3
-  
+    self.forts_visited = 0
+    self.win_mileage = 2040
+    
   def print_locations(self):
     for location in self.locations:
       location.describe()
@@ -205,8 +208,8 @@ class player():
       print("You did not make it to Oregon City by {}".format(self.end_date))
       print("Your party froze to death on the trail")
       return True
-    
     return False
+  
   
     
   

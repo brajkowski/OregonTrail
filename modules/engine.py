@@ -13,14 +13,15 @@ class engine():
     self.player = player.player()
     self.sleep = 2
     self.should_close = False
+    self.did_win = False
     self.rations = 3
     
   def run_tests(self, debug=False):
     self.player.load_debug()
     while not self.should_close:
       self.player.print_status()
-      self.player.advance_time(14)
-      self.should_close = self.player.check_for_end_game()      
+      self.travel()
+      #self.should_close = self.player.check_for_end_game()      
       #self.take_turn()
       if debug:
         debug_input = input("$ ")
@@ -206,6 +207,10 @@ class engine():
     
     if miles_to_travel > self.player.miles_to_next_mark:
       location = self.player.get_next_location()
+      if self.player.miles_traveled >= self.player.win_mileage:
+        self.should_close = True
+        self.did_win = True
+        return
       print('You were prepared to travel {} miles but arrived at {}'.format(miles_to_travel, location.name))
       
       if location.kind == 'Fort':
@@ -299,6 +304,10 @@ class engine():
     self.close()
     
   def close(self):
+    if self.did_win:
+      print("Congratulations you win!")
+    else:
+      print("Sorry, you have lost the game. Play again soon!")
     self.gui.close()
 
 def main():
