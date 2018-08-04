@@ -190,23 +190,27 @@ class player():
     for member in self.members:
       member.heal_to_full_if_sick()
       
-  def check_for_end_game(self):
+  def check_for_end_game(self,output=True):
     if self.get_from_inventory('food') <= 0:
-      print("You ran out of food")
-      print("Your party starved to death")
+      if output:
+        print("You ran out of food")
+        print("Your party starved to death")
       return True
     if self.get_from_inventory('oxen') <= 0:
-      print("You do not have any oxen left")
-      print("You can no longer travel the trail")
+      if output:
+        print("You do not have any oxen left")
+        print("You can no longer travel the trail")
       return True
     for member in self.members:
       if member.is_leader and not member.is_alive:
-        print("You cannot continue on the trail without your leader")
+        if output:
+          print("You cannot continue on the trail without your leader")
         return True
 
     if self.current_date >= self.end_date:
-      print("You did not make it to Oregon City by {}".format(self.end_date))
-      print("Your party froze to death on the trail")
+      if output:
+        print("You did not make it to Oregon City by {}".format(self.end_date))
+        print("Your party froze to death on the trail")
       return True
     return False
   

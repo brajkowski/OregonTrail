@@ -285,7 +285,7 @@ def raider_attack(player):
     elif response == 2:
       print("You must win the puzzle in order to defeat the raiders")
       if puzzle.did_win():
-        print("You search the raiders and found 50 pounds of food and 50 bullets")
+        print("You search the raiders' gear and found 50 pounds of food and 50 bullets")
         player.add_to_inventory('food',50)
         player.add_to_inventory('bullets',50)
       else:

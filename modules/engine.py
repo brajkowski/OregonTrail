@@ -65,7 +65,7 @@ class engine():
         prices[i] += round(prices[i] * increase,2)
       #prices = [120,1.5,6,30,45]
       quants = [1,1,20,1,1]
-    print(prices)
+
     # Handle special case for buying yokes.
     if not fort:
       while True:
@@ -233,7 +233,8 @@ class engine():
     self.player.heal_all_if_sick()
     
   def at_fort(self):
-    while True:
+    while not self.should_close:
+      self.player.print_status()
       self.messages.print_message('fort_options')
       options = [1,2,3]
       response = io.get_input_int_protected(options)
@@ -243,11 +244,14 @@ class engine():
         self.store(fort=True)
       elif response == 3:
         return
+      if self.player.check_for_end_game(output=False):
+        self.should_close = True
 
   def at_river(self, location):
     river_height = location.height
-    print("River Height: {} feet".format(river_height))
-    while True:
+    while not self.should_close:
+      self.player.print_status()
+      print("River Height: {} feet".format(river_height))
       self.messages.print_message('river_options')
       options = [1,2,3,4]
       response = io.get_input_int_protected(options)
@@ -274,9 +278,12 @@ class engine():
             return
           else:
             print("You do not have enough money")
+      if self.player.check_for_end_game(output=False):
+        self.should_close = True
    
   def at_landmark(self):
-    while True:
+    while not self.should_close:
+      self.player.print_status()
       self.messages.print_message('landmark_options')
       options = [1,2]
       response = io.get_input_int_protected(options)
@@ -284,6 +291,8 @@ class engine():
         self.rest()
       elif response == 2:
         return
+      if self.player.check_for_end_game(output=False):
+        self.should_close = True
     
   def rest(self):
     random.seed()
