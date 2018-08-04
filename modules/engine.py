@@ -19,7 +19,7 @@ class engine():
   def run_tests(self, debug=False):
     self.player.load_debug()
     while not self.should_close: 
-      #self.player.inventory['food'] = 1000
+      self.player.inventory['food'] = 1000
       self.take_turn()
       if debug:
         debug_input = input("$ ")
@@ -29,6 +29,7 @@ class engine():
           self.should_close = misfortunes.sickness(self.player)
         if debug_input == '2':
           self.player.update_inventory('kits',2)
+    self.close()
       
   def new_game(self):
     self.messages.print_message('welcome')
