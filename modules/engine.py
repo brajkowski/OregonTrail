@@ -3,7 +3,7 @@ This module is the entry point for the game.  It handles the high level
 game logic and acts as a controller for all of modules.
 """
 
-#import graphics
+import graphics
 import game_io as io
 import player
 import random
@@ -23,13 +23,15 @@ class engine():
     did_quit (bool): True if the player ended the game early.
   """
   def __init__(self):
-    #self.gui = graphics.gui()
+
+
     self.messages = io.messages()
     self.player = player.player()
     self.sleep = 2
     self.should_close = False
     self.did_win = False
     self.did_quit = False
+    self.gui = graphics.gui(player)
     
   def run_tests(self, debug=False):
     """
@@ -43,8 +45,10 @@ class engine():
     """
     self.player.load_debug()
     while not self.should_close: 
-      self.player.inventory['food'] = 1000
-      self.take_turn()
+      self.gui.window.mainloop()
+      self.gui.save_coordinates()
+      #self.player.inventory['food'] = 1000
+      #self.take_turn()
       
       # Run debug console input.
       if debug:
@@ -528,7 +532,7 @@ class engine():
     input("Enter any key to exit \n>>> ")
     
     # Perform cleanup.
-    #self.gui.close()
+    self.gui.close()
 
 def main():
   """
@@ -541,8 +545,8 @@ def main():
     None
   """
   e = engine()
-  e.run()
-  #e.run_tests(debug=False)
+  #e.run()
+  e.run_tests(debug=True)
   
 # Define program entry point.
 if __name__ == "__main__":
