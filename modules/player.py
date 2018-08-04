@@ -74,22 +74,23 @@ class player():
     self.win_mileage = 2040
   
   def load_debug(self):
-    self.inventory = {'food':1000,
-        'money':10000000,
+    self.inventory = {
+        'food':1000,
+        'money':1000,
         'bullets':500,
         'oxen':10,
-        'kits':3,
-        'parts':3
+        'kits':2,
+        'parts':2
         }
     self.next_location = 0
     self.members = [member('This',is_leader=True),member('Is'),member('A'),member('Debug'),member('Test')]
-    self.current_date = datetime.date(1847,4,9)
+    self.current_date = datetime.date(1847,3,1)
     self.end_date = datetime.date(1847,11,30)
     self.miles_traveled = 0
     self.locations = locations.parse_locations()
     self.members_alive = 5
     self.update_miles_to_next()
-    self.rations = 3
+    self.rations = 2
     self.forts_visited = 0
     self.win_mileage = 2040
     

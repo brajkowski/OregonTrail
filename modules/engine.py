@@ -14,10 +14,16 @@ class engine():
     self.sleep = 2
     self.should_close = False
     self.did_win = False
+    self.did_quit = False
     self.rations = 3
     
   def run_tests(self, debug=False):
     self.player.load_debug()
+    while not self.should_close:
+      self.take_turn()
+    self.close()
+    
+    """
     while not self.should_close: 
       self.player.inventory['food'] = 1000
       self.take_turn()
@@ -30,6 +36,7 @@ class engine():
         if debug_input == '2':
           self.player.update_inventory('kits',2)
     self.close()
+    """
       
   def new_game(self):
     self.messages.print_message('welcome')
@@ -148,6 +155,8 @@ class engine():
       self.hunt()
     elif response == 4:
       self.should_close = True
+      self.did_quit = True
+      return
     
     # Perform general turn events here.
     self.player.update_miles_to_next()
@@ -200,7 +209,8 @@ class engine():
     
   def travel(self):
     random.seed()
-    miles_to_travel = random.randint(70,140)
+    lower = 70 + int(self.player.inventory['oxen']*5)
+    miles_to_travel = random.randint(lower,140)
     days_elapsed = 14
     food_consumed = self.player.members_alive * self.player.rations * days_elapsed
 
@@ -208,27 +218,28 @@ class engine():
     
     if miles_to_travel >= self.player.miles_to_next_mark:
       location = self.player.get_next_location()
-      print('You were prepared to travel {} miles but arrived at {}'.format(miles_to_travel, location.name))
       original_miles = miles_to_travel
       miles_to_travel = self.player.miles_to_next_mark
       adjustment = float(miles_to_travel / original_miles)
-      
       food_adjusted = int(food_consumed*adjustment)
       days_adjusted = int(days_elapsed*adjustment)
-      
       self.player.advance_time(days_adjusted)
       self.player.consume('food', food_adjusted)
-      print('You consumed {} pounds of food'.format(food_adjusted))
       self.player.travel(miles_to_travel)
-      print('You traveled {} day(s)'.format(int(days_elapsed*adjustment)))
       self.player.heal_all_if_sick()
       self.player.update_miles_to_next()
-      
       if self.player.miles_traveled >= self.player.win_mileage:
         self.should_close = True
         self.did_win = True
+        if self.player.check_for_end_game(output=False):
+          self.did_win = False
+        else:
+          print("You arrived at {}".format(location.name))
         return
-     
+      print('You were prepared to travel {} miles but arrived at {}'.format(original_miles, location.name))
+      print('You consumed {} pounds of food'.format(food_adjusted))
+      print('You traveled {} day(s)'.format(int(days_elapsed*adjustment)))
+
       
       if location.kind == 'Fort':
         self.at_fort()
@@ -330,15 +341,18 @@ class engine():
     
   def close(self):
     if self.did_win:
-      print("Congratulations you win!")
-    else:
+      print("Congratulations you successfully navigated the trail!")
+    elif not self.did_quit:
       print("Sorry, you have lost the game. Play again soon!")
+    elif self.did_quit:
+      print("Sorry you had to leave early. Play again soon!")
+    input("Enter any key to exit \n>>> ")
     self.gui.close()
 
 def main():
   e = engine()
-  #e.run()
-  e.run_tests(debug=False)
+  e.run()
+  #e.run_tests(debug=False)
   
   
 if __name__ == "__main__":
