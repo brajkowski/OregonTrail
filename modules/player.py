@@ -1,7 +1,22 @@
+"""
+This module is responsible for defining the member and player classes.
+"""
+
 import datetime
 import locations
 
 class member():
+  """
+  Keeps track of members health/status.
+  
+  Members:
+    name (string): member name.
+    is_alive (bool): True if member is alive, False otherwise.
+    is_sick (bool): True if member is sick, False if healthy.
+    status (string): Text description of status.
+    is_leader (bool): True if the member is the leader, false if normal member.
+    turns_to_healthy (int): Number of turns left before member is fully healed.
+  """
   def __init__(self, name, is_leader=False):
     self.name = name
     self.is_alive = True
@@ -11,6 +26,15 @@ class member():
     self.turns_to_healthy = 5
     
   def gets_sick(self,sickness):
+    """
+    Changes member status to be sick and handles member dying.
+    
+    Arguments:
+      sickness (string): Name of sickness.
+      
+    Returns:
+      None
+    """
     self.turns_to_healthy = 5
     if self.is_sick:
       self.dies(sickness)
@@ -19,21 +43,59 @@ class member():
       self.status = "Has {}".format(sickness)
     
   def dies(self, sickness):
+    """
+    Updates member status to be deceased.
+    
+    Argument:
+      sickness (string): Name of second sickness (not used)
+    
+    Returns:
+      None
+    """
     print("{} died from multiple illnesses".format(self.name))
     self.status = "Deceased"
     self.is_alive = False
     
   def drown(self):
+    """
+    Updates member status to be deceased.
+    
+    Arguments:
+      None
+      
+    Returns:
+      None
+    """
     print("{} drowned".format(self.name))
     self.status = "Deceased"
     self.is_alive = False
     
   def use_med_kit(self):
+    """
+    Changes the amound of time to become healthy.
+    
+    Arguments:
+      None
+    
+    Returns:
+      None
+    """
     self.turns_to_healthy = 2
     
   def heal_if_sick(self):
+    """
+    Protected way to heal members.  Only heals for 1 turn.
+    
+    Arguments:
+      None
+    
+    Returns:
+      None
+    """
     if self.is_sick:
       self.turns_to_healthy -= 1
+      
+      # Handle full health.
       if self.turns_to_healthy == 0:
         self.status = "Healthy"
         self.turns_to_healthy = 5
@@ -41,6 +103,15 @@ class member():
         print("{} is back to full health".format(self.name))
         
   def heal_to_full_if_sick(self):
+    """
+    Protected way to fully heal members.
+    
+    Arguments:
+      None
+      
+    Returns:
+      None
+    """
     if self.is_sick:
       self.turns_to_healthy = 5
       self.status = "Healthy"
@@ -48,10 +119,29 @@ class member():
       print("{} is back to full health".format(self.name))
       
   def print_status(self):
+    """
+    Debug method. (not used)
+    """
     print("{}: {} (Leader={}, Days to FH={})".format(self.name,self.status,self.is_leader,self.turns_to_healthy))
 
 
 class player():
+  """
+  Keeps track of game-state variables.
+  
+  Members:
+    inventory {}: Dictionary for all inventory items.
+    next_location (int): Tracks the next location to be encountered.
+    members []: List of all party members.
+    current_date (datetime.date): Tracks current date.
+    end_date (datetime.date): Date for end-game condition.
+    miles_traveled (int): Tracks current mileage.
+    locations []: List of all locations that can be encountered (chronological order).
+    members_alive (int): Number of party members currently alive.
+    rations (int): Rate of food consumption (per person per day).
+    forts_visited (int): Tracks how many forts have already been visited.
+    win_mileage (int): Defines win game condition value.
+  """
   def __init__(self):
     self.inventory = {
         'food':0,
@@ -68,12 +158,22 @@ class player():
     self.miles_traveled = 0
     self.locations = locations.parse_locations()
     self.members_alive = 5
-    self.update_miles_to_next()
     self.rations = 3
     self.forts_visited = 0
     self.win_mileage = 2040
+    
+    self.update_miles_to_next()
   
   def load_debug(self):
+    """
+    Loads game state variables with custom amounts for debugging purposes.
+    
+    Arguments:
+      None
+    
+    Returns:
+      none
+    """
     self.inventory = {
         'food':1000,
         'money':1000,
@@ -95,16 +195,54 @@ class player():
     self.win_mileage = 2040
     
   def print_locations(self):
+    """
+    Prints all of the game location details for debugging purposes.
+    
+    Arguments:
+      None
+    
+    Returns:
+      None
+    """
     for location in self.locations:
       location.describe()
   
   def get_from_inventory(self,key):
+    """
+    Returns current amount of an item in the inventory.
+    
+    Arguments:
+      key (string): Inventory item name.
+      
+    Returns:
+      float or int: Current amount of item.
+    """
     return self.inventory[key]
   
   def update_inventory(self,key,value):
+    """
+    Sets the amount of an item in the inventory.
+    
+    Arguments:
+      key (string): Inventory item name.
+      value (float or int): New amount of item.
+      
+    Returns:
+      None
+    """
     self.inventory[key] = value
     
   def can_consume(self,key, amount):
+    """
+    Checks if player can lose an amount of an item.
+    
+    Arguments:
+      key (string): Inventory item name.
+      amount (float or int): Amount of item to lose.
+      
+    Returns:
+      bool: True if player has more than enough of item to lose.
+    """
     if amount > self.inventory[key]:
       return False
     return True
@@ -118,6 +256,16 @@ class player():
     self.inventory[key] += amount
   
   def can_add_to_inventory(self,key,amount):
+    """
+    Ensures oxen and food limits are not violated.
+    
+    Arguments:
+      key (string): Inventory item name.
+      amount (float or int): Amount pending addition.
+      
+    Returns:
+      float or int: Current amount of item.
+    """
     if key == 'oxen':
       limit = 10
       current = self.get_from_inventory('oxen')
@@ -192,22 +340,37 @@ class player():
       member.heal_to_full_if_sick()
       
   def check_for_end_game(self,output=True):
+    """
+    Check game-state for any end game conditions.
+    
+    Arguments:
+      output (bool) (optional): True if messages should be printed to console.
+      
+    Returns:
+      bool: True if the game should end, false otherwise.
+    """
+    # No food.
     if self.get_from_inventory('food') <= 0:
       if output:
         print("You ran out of food")
         print("Your party starved to death")
       return True
+    
+    # No oxen.
     if self.get_from_inventory('oxen') <= 0:
       if output:
         print("You do not have any oxen left")
         print("You can no longer travel the trail")
       return True
+    
+    # Leader died.
     for member in self.members:
       if member.is_leader and not member.is_alive:
         if output:
           print("You cannot continue on the trail without your leader")
         return True
 
+    # End date.
     if self.current_date >= self.end_date:
       if output:
         print("You did not make it to Oregon City by {}".format(self.end_date))
