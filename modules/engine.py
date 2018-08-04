@@ -3,7 +3,7 @@ This module is the entry point for the game.  It handles the high level
 game logic and acts as a controller for all of modules.
 """
 
-import graphics
+#import graphics
 import game_io as io
 import player
 import random
@@ -23,7 +23,7 @@ class engine():
     did_quit (bool): True if the player ended the game early.
   """
   def __init__(self):
-    self.gui = graphics.gui()
+    #self.gui = graphics.gui()
     self.messages = io.messages()
     self.player = player.player()
     self.sleep = 2
@@ -528,7 +528,7 @@ class engine():
     input("Enter any key to exit \n>>> ")
     
     # Perform cleanup.
-    self.gui.close()
+    #self.gui.close()
 
 def main():
   """
