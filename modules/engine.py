@@ -166,6 +166,7 @@ class engine():
     if self.player.check_for_end_game():
       self.should_close = True
       return
+    misfortunes.raider_attack(self.player)
       
   def hunt(self):
     current_food = self.player.get_from_inventory('food')
@@ -312,8 +313,8 @@ class engine():
 
 def main():
   e = engine()
-  #e.run()
-  e.run_tests(debug=False)
+  e.run()
+  #e.run_tests(debug=False)
   
   
 if __name__ == "__main__":

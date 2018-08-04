@@ -258,7 +258,8 @@ def raider_attack(player):
   Returns:
     None
   """
-  mileage = player.mileage
+  random.seed()
+  mileage = player.miles_traveled
   
   # Generate probability based on mileage.
   chance = int(((mileage / 100 - 4) ** 2 + 72) / ((mileage / 100 - 4) ** 2 + 12) - 1) + 1
@@ -315,6 +316,7 @@ def failed_river(player):
   Returns:
     None
   """
+  random.seed()
   print("Your attempt to cross the river failed")
   
   # Define probabilities and create number lists for drowning and each item.
