@@ -1,3 +1,11 @@
-Welcome to the Oregon trail!
-This is where the description of the game will go.
-Should be awesome.
+Welcome to Oregon Trail!
+
+The year is 1847, and you have decided to leave your boring, simple, 9-5 life 
+in Independence, Missouri behind. You are assured, like most people in 1847,
+that a more exciting life is waiting for you in Oregon City, Oregon.
+
+- You need to make it to Oregon City before 1847-11-30 or else you will freeze to death
+- If you run out of food, you will starve to death
+- If you run out of oxen, you cannot continue on the trail
+- If you cannot repair your wagon, you cannot continue on the trail
+- If your party leader dies, you cannot continue on the trail

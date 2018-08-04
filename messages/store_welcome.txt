@@ -4,14 +4,14 @@ spent at the store in Independence before you leave.  There you
 can buy:
 
 - Oxen: You need to have enough oxen to pull the wagon but you only
-    have enough spots for 8 oxen.  You will need to spend between
+    have enough spots for 10 oxen.  You will need to spend between
     $100-200 on oxen.  The more you have, the faster you will go!
     
-- Food: You can buy any amount of food.  The more you have, the less
-    chance there is of getting sick.
+- Food: You can buy any amount of food.  You will consume food every
+    day you are on the trail.
     
-- Ammo: You will need bullets for attacks by animals and bandits, and
-    for hunting food along the trail.
+- Ammo: You will need bullets for hunting animals and defending against
+    raider attacks.
     
 - Misc. Supplies: You can buy medical kits and spare wagon parts to aid
     with any sickness and to fix your wagon along the trail.
