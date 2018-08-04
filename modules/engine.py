@@ -18,11 +18,9 @@ class engine():
     
   def run_tests(self, debug=False):
     self.player.load_debug()
-    while not self.should_close:
-      self.player.print_status()
-      self.travel()
-      #self.should_close = self.player.check_for_end_game()      
-      #self.take_turn()
+    while not self.should_close: 
+      self.player.inventory['food'] = 1000
+      self.take_turn()
       if debug:
         debug_input = input("$ ")
         if debug_input == 'q':
@@ -205,20 +203,26 @@ class engine():
     miles_to_travel = random.randint(70,140)
     days_elapsed = 14
     food_consumed = self.player.members_alive * self.player.rations * days_elapsed
-    
-    self.player.advance_time(days_elapsed)
-    self.player.consume('food', food_consumed)
-    self.player.travel(miles_to_travel)
-    self.player.heal_all_if_sick()
+
     print('You consumed {} pounds of food'.format(food_consumed))
     
-    if miles_to_travel > self.player.miles_to_next_mark:
+    if miles_to_travel >= self.player.miles_to_next_mark:
       location = self.player.get_next_location()
+      print('You were prepared to travel {} miles but arrived at {}'.format(miles_to_travel, location.name))
+      miles_to_travel = self.player.miles_to_next_mark
+
+      
+      self.player.advance_time(days_elapsed)
+      self.player.consume('food', food_consumed)
+      self.player.travel(miles_to_travel)
+      self.player.heal_all_if_sick()
+      self.player.update_miles_to_next()
+      
       if self.player.miles_traveled >= self.player.win_mileage:
         self.should_close = True
         self.did_win = True
         return
-      print('You were prepared to travel {} miles but arrived at {}'.format(miles_to_travel, location.name))
+     
       
       if location.kind == 'Fort':
         self.at_fort()
@@ -226,13 +230,15 @@ class engine():
         self.at_river(location)
       elif location.kind == None:
         self.at_landmark()
-      
-      miles_to_travel = self.player.miles_to_next_mark
       self.player.update_next_location()
+      
     else:  
       print('You traveled {} miles in {} days'.format(miles_to_travel,days_elapsed))
-  
-
+      self.player.advance_time(days_elapsed)
+      self.player.consume('food', food_consumed)
+      self.player.travel(miles_to_travel)
+      self.player.heal_all_if_sick()
+    
     
   def at_fort(self):
     while not self.should_close:
@@ -324,8 +330,8 @@ class engine():
 
 def main():
   e = engine()
-  e.run()
-  #e.run_tests(debug=False)
+  #e.run()
+  e.run_tests(debug=False)
   
   
 if __name__ == "__main__":

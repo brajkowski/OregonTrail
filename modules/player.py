@@ -76,10 +76,10 @@ class player():
   def load_debug(self):
     self.inventory = {'food':1000,
         'money':10000000,
-        'bullets':100,
+        'bullets':500,
         'oxen':10,
-        'kits':2,
-        'parts':2
+        'kits':3,
+        'parts':3
         }
     self.next_location = 0
     self.members = [member('This',is_leader=True),member('Is'),member('A'),member('Debug'),member('Test')]

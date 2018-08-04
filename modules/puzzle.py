@@ -10,6 +10,7 @@ def did_win():
   for i in range(guesses):
     #print("Guess a number between 1 and 10 ({} guesses remaining)".format(guesses))
     response = io.get_input_int_protected(options)
+    guesses -= 1
     if response == number:
       print("You win!")
       return True
@@ -17,6 +18,5 @@ def did_win():
       print("Try a lower number ({} guesses remaining)".format(guesses))
     elif response < number:
       print("Try a higher number ({} guesses remaining)".format(guesses))
-    guesses -= 1
   print("Better luck next time.")
   return False
