@@ -58,7 +58,7 @@ def hunt(player):
         if puzzle.did_win():
           food += animal[2]
           player.consume('bullets', animal[3])
-          print("Food collected: {}".format(animal[2]))
+          print("Food collected: {} pounds".format(animal[2]))
           print("Bullets remaining: {}".format(player.get_from_inventory('bullets')))
       else:
         print("You need 10 or more bullets to hunt")
