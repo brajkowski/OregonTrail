@@ -199,12 +199,18 @@ class engine():
     self.player.advance_time(1)
     self.player.heal_all_to_full_if_sick()
   
-  # TODO: Consider adjusting food for short travel days.    
+  # TODO: Consider adjusting food/time for short travel days.    
   def travel(self):
     random.seed()
     miles_to_travel = random.randint(70,140)
     days_elapsed = 14
     food_consumed = self.player.members_alive * self.player.rations * days_elapsed
+    
+    self.player.advance_time(days_elapsed)
+    self.player.consume('food', food_consumed)
+    self.player.travel(miles_to_travel)
+    self.player.heal_all_if_sick()
+    print('You consumed {} pounds of food'.format(food_consumed))
     
     if miles_to_travel > self.player.miles_to_next_mark:
       location = self.player.get_next_location()
@@ -225,12 +231,8 @@ class engine():
       self.player.update_next_location()
     else:  
       print('You traveled {} miles in {} days'.format(miles_to_travel,days_elapsed))
-    print('You consumed {} pounds of food'.format(food_consumed))
-    
-    self.player.advance_time(days_elapsed)
-    self.player.consume('food', food_consumed)
-    self.player.travel(miles_to_travel)
-    self.player.heal_all_if_sick()
+  
+
     
   def at_fort(self):
     while not self.should_close:
