@@ -161,6 +161,7 @@ class player():
     self.rations = 3
     self.forts_visited = 0
     self.win_mileage = 2040
+    self.is_halfway = False
     
     self.update_miles_to_next()
   
@@ -321,6 +322,7 @@ class player():
     
   def update_next_location(self):
     self.next_location += 1
+    self.is_halfway = False
   
   def print_current_date(self):
     print(self.current_date.strftime("%A %d. %B %Y"))
@@ -338,7 +340,21 @@ class player():
   def heal_all_to_full_if_sick(self):
     for member in self.members:
       member.heal_to_full_if_sick()
-      
+  
+  def should_draw_halfway(self):
+    if self.is_halfway:
+      return False
+    prev_loc = self.locations[self.next_location - 1]
+    next_loc = self.locations[self.next_location]
+    prev_miles = prev_loc.mileage
+    next_miles = next_loc.mileage
+    ratio = (self.miles_traveled - prev_miles) / (next_miles - prev_miles)
+    if ratio >= 0.5:
+      self.is_halfway = True
+      return True
+    return False
+    
+  
   def check_for_end_game(self,output=True):
     """
     Check game-state for any end game conditions.

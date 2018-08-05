@@ -38,7 +38,7 @@ def randomize(player):
   # Randomly pick one event to occur.
   i_misfortune = random.randint(0,len(misfortunes)-1)
   misfortune = misfortunes[i_misfortune]
-  misfortune(player)
+  return misfortune(player)
 
 def sickness(player):
   """

@@ -6,18 +6,29 @@ class gui():
     self.player = player
     turtle.setup()
     
-    self.tester = turtle.Turtle()
-    self.tester.onclick(self.store_coordinate)
-    self.window = self.tester.screen
-    self.window.onscreenclick(self.store_coordinate)
+    self.path = turtle.Turtle()
+    self.path.hideturtle()
+    self.path.width(5)
+    self.path.color('red')
+    #self.path.onclick(self.store_coordinate)
+    self.window = self.path.screen
+    #self.window.onscreenclick(self.store_coordinate)
     self.window.setup(1327,569) # Size of the map.
     self.location_coordinates = []
+    self.current_coordinate = 0
+    
+    self.load_coordinates()
 
     # Load background map image.
     try:
       self.window.bgpic("../graphics/map_edit_resize.png")
     except:
       print("Error: Could not load window background.")
+      
+    # Set turtle at starting point.
+    self.path.penup()
+    self.path.goto(self.location_coordinates[0])
+    self.path.pendown()
       
   def store_coordinate(self,x,y):
     print(x,y)
@@ -26,7 +37,7 @@ class gui():
   def save_coordinates(self):
     with open("../graphics/location_coords.txt",'w') as file:
       for location in self.location_coordinates:
-        file.write("{},{}\n".format(location[0],location[1]))
+        file.write("{},{}\n".format(int(location[0]),int(location[1])))
   
   def load_coordinates(self):
     location_coordinates = []
@@ -35,24 +46,29 @@ class gui():
         coordinate = line[:-1] # Remove \n
         coordinates = coordinate.split(',')
         #print(int(coordinates[0][:-2]),int(coordinates[1][:-2]))
-        location_coordinates.append((int(coordinates[0][:-2]),int(coordinates[1][:-2])))
-        """
-        string = file.readline()
-        string = string[:-1] # Remove \n
-        string = string.split(',')
-        coordinates.append((string[0],string[1]))
-        """
+        location_coordinates.append((int(coordinates[0]),int(coordinates[1])))
     self.location_coordinates = location_coordinates
   
   def print_coordinates(self):
     for coordinate in self.location_coordinates:
       print(coordinate)
-  
-  def clear(self):
-    self.window.clear()
-  
-  def draw(self):
-    self.tester.forward(100)
     
+  def draw_all(self):
+    self.path.penup()
+    for coordinate in self.location_coordinates:
+      self.path.setposition(coordinate[0],coordinate[1])
+      self.path.pendown()
+  
+  def draw_next_coord(self):
+    self.current_coordinate += 1
+    try:
+      coordinate = self.location_coordinates[self.current_coordinate]
+    except IndexError:
+      print("At final location")
+      return
+    x = coordinate[0]
+    y = coordinate[1]
+    self.path.setposition(x,y)
+     
   def close(self):
     turtle.bye()

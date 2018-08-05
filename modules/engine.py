@@ -45,12 +45,9 @@ class engine():
     """
     self.player.load_debug()
     while not self.should_close: 
-      #self.gui.window.mainloop()
-      self.gui.load_coordinates()
-      self.gui.print_coordinates()
-      #self.gui.save_coordinates()
-      #self.player.inventory['food'] = 1000
-      #self.take_turn()
+      self.player.inventory['food'] = 1000
+      self.player.inventory['oxen'] = 10
+      self.take_turn()
       
       # Run debug console input.
       if debug:
@@ -58,10 +55,11 @@ class engine():
         if debug_input == 'q':
           self.should_close = True
         if debug_input == '1':
-          self.should_close = misfortunes.sickness(self.player)
+          if misfortunes.randomize(self.player):
+            self.should_close = True
         if debug_input == '2':
           self.player.update_inventory('kits',2)
-    #self.close()
+    self.close()
       
   def new_game(self):
     """
@@ -330,6 +328,11 @@ class engine():
       self.player.heal_all_if_sick()
       self.player.update_miles_to_next()
       
+      # Update GUI.
+      if not self.player.is_halfway:
+        self.gui.draw_next_coord()
+      self.gui.draw_next_coord()
+      
       # Check for win condition.
       if self.player.miles_traveled >= self.player.win_mileage:
         self.should_close = True
@@ -339,6 +342,11 @@ class engine():
           self.did_win = False
         else:
           print("You arrived at {}".format(location.name))
+        return
+      
+      # Check for lose condition before arriving.
+      if self.player.check_for_end_game(output=False):
+        self.should_close = True
         return
       
       print('You were prepared to travel {} miles but arrived at {}'.format(original_miles, location.name))
@@ -362,6 +370,10 @@ class engine():
       print('You consumed {} pounds of food'.format(food_consumed))
       self.player.travel(miles_to_travel)
       self.player.heal_all_if_sick()
+      
+      # Update GUI if halfway to landmark.
+      if self.player.should_draw_halfway():
+        self.gui.draw_next_coord()
        
   def at_fort(self):
     """
@@ -456,7 +468,7 @@ class engine():
       None
     """
     # Allow infinite resting.
-    while not self.should_close:
+    while not self.should_close:      
       self.player.print_status()
       self.messages.print_message('landmark_options')
       options = [1,2]
@@ -547,8 +559,8 @@ def main():
     None
   """
   e = engine()
-  #e.run()
-  e.run_tests(debug=True)
+  e.run()
+  #e.run_tests(debug=True)
   
 # Define program entry point.
 if __name__ == "__main__":
