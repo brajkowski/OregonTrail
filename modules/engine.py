@@ -45,8 +45,10 @@ class engine():
     """
     self.player.load_debug()
     while not self.should_close: 
-      self.gui.window.mainloop()
-      self.gui.save_coordinates()
+      #self.gui.window.mainloop()
+      self.gui.load_coordinates()
+      self.gui.print_coordinates()
+      #self.gui.save_coordinates()
       #self.player.inventory['food'] = 1000
       #self.take_turn()
       
@@ -59,7 +61,7 @@ class engine():
           self.should_close = misfortunes.sickness(self.player)
         if debug_input == '2':
           self.player.update_inventory('kits',2)
-    self.close()
+    #self.close()
       
   def new_game(self):
     """

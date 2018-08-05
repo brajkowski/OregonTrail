@@ -26,7 +26,27 @@ class gui():
   def save_coordinates(self):
     with open("../graphics/location_coords.txt",'w') as file:
       for location in self.location_coordinates:
-        file.write("{}{},".format(location[0],location[1]))
+        file.write("{},{}\n".format(location[0],location[1]))
+  
+  def load_coordinates(self):
+    location_coordinates = []
+    with open("../graphics/location_coords.txt",'r') as file:
+      for line in file:
+        coordinate = line[:-1] # Remove \n
+        coordinates = coordinate.split(',')
+        #print(int(coordinates[0][:-2]),int(coordinates[1][:-2]))
+        location_coordinates.append((int(coordinates[0][:-2]),int(coordinates[1][:-2])))
+        """
+        string = file.readline()
+        string = string[:-1] # Remove \n
+        string = string.split(',')
+        coordinates.append((string[0],string[1]))
+        """
+    self.location_coordinates = location_coordinates
+  
+  def print_coordinates(self):
+    for coordinate in self.location_coordinates:
+      print(coordinate)
   
   def clear(self):
     self.window.clear()
