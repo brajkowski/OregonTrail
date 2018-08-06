@@ -8,16 +8,15 @@ A text-based adventure game that simulates the arduous task of leaving Independe
 
 ## To Play
 #### Windows
-- Unzip the project file
-- Navigate to `.../OregonTrail/`
-- Double click "run.bat"
-
+1. Unzip the project file
+2. Navigate to `.../OregonTrail/`
+3. Double click "run.bat"
 - Alternatively navigate to `.../OregonTrail/modules/` and run `python engine.py`
 
 #### Mac/Linux
-- Unzip the project file
-- Navigate to `.../OregonTrail/modules/`
-- Run `$ python3 engine.py`
+1. Unzip the project file
+2. Navigate to `.../OregonTrail/modules/`
+3. Run `$ python3 engine.py`
 
 ## Known Issues
 - Turtle window appears unresponsive when playing the game, but will still update the player's route (Windows)
