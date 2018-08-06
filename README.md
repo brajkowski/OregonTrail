@@ -4,8 +4,9 @@
   - Please ensure you have Python 3.0 or higher installed
 
 ## To Play
-  Windows
+  - Windows
+    - Navigate to .../OregonTrail/
     - Double click "run.bat"
-  Mac/Linux
+  - Mac/Linux
     - Navigate to .../OregonTrail/modules/
-    - run '''$ python engine.py''' 
+    - Run `$ python engine.py`
