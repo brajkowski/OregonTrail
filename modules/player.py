@@ -141,6 +141,7 @@ class player():
     rations (int): Rate of food consumption (per person per day).
     forts_visited (int): Tracks how many forts have already been visited.
     win_mileage (int): Defines win game condition value.
+    is_halfway (bool): True if player is halfway to next landmark from previous. (for GUI)
   """
   def __init__(self):
     self.inventory = {
@@ -322,7 +323,7 @@ class player():
     
   def update_next_location(self):
     self.next_location += 1
-    self.is_halfway = False
+    self.is_halfway = False # Reset for GUI purposes.
   
   def print_current_date(self):
     print(self.current_date.strftime("%A %d. %B %Y"))
@@ -342,8 +343,20 @@ class player():
       member.heal_to_full_if_sick()
   
   def should_draw_halfway(self):
+    """
+    Used to determine if GUI route should be updated to halfway.
+    
+    Arguments:
+      None
+      
+    Returns:
+      bool: True if GUI should update route to display halfway point.
+    """
+    # Don't draw halfway if already past halfway.
     if self.is_halfway:
       return False
+    
+    # Calculate if player is more than halfway to next landmark from previous.
     prev_loc = self.locations[self.next_location - 1]
     next_loc = self.locations[self.next_location]
     prev_miles = prev_loc.mileage
