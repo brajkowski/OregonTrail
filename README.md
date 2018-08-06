@@ -11,6 +11,9 @@ A text-based adventure game that simulates the arduous task of leaving Independe
 - Unzip the project file
 - Navigate to `.../OregonTrail/`
 - Double click "run.bat"
+
+- Alternatively navigate to `.../OregonTrail/modules/` and run `python engine.py`
+
 #### Mac/Linux
 - Unzip the project file
 - Navigate to `.../OregonTrail/modules/`
