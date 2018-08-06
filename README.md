@@ -15,3 +15,7 @@ A text-based adventure game that simulates the arduous task of leaving Independe
 - Unzip the project file
 - Navigate to `.../OregonTrail/modules/`
 - Run `$ python engine.py`
+
+## Known Issues
+- Turtle window appears unresponsive when playing the game, but will still update the player's route (Windows)
+- Turtle window repositioning is sometimes unresponsive and usually takes several attempts to move it (Windows)
