@@ -293,12 +293,12 @@ class player():
    
   def print_status(self):
     print()
-    print('---------- Status ----------')
-    print('Date:', self.current_date)
-    print('Miles Traveled:', self.miles_traveled)
-    print('Miles to next landmark:', self.miles_to_next_mark)
-    print('Rations: {} pounds per person'.format(self.rations))
-    print('Food: {} pounds'.format(self.inventory['food']))
+    print('---------- Status ---------- \t ---------- Members ---------')
+    print('Date:', self.current_date, "\t\t {}: {} (leader)".format(self.members[0].name,self.members[0].status))
+    print('Miles Traveled:', self.miles_traveled, "\t\t {}: {}".format(self.members[1].name,self.members[1].status))
+    print('Miles to next landmark:', self.miles_to_next_mark,"\t {}: {}".format(self.members[2].name,self.members[2].status))
+    print('Rations: {} pounds per person'.format(self.rations),"\t {}: {}".format(self.members[3].name,self.members[3].status))
+    print('Food: {} pounds'.format(self.inventory['food']),"\t\t {}: {}".format(self.members[4].name,self.members[4].status))
     print('Bullets: {}'.format(self.inventory['bullets']))
     print('Cash: ${}'.format("%.2f" %self.inventory['money']))
     print('Oxen: {}'.format(self.inventory['oxen']))
