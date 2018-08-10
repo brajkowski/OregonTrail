@@ -7,7 +7,7 @@ can buy:
     have enough spots for 10 oxen.  You will need to spend between
     $100-200 on oxen.  The more you have, the faster you will go!
     
-- Food: You can buy any amount of food.  You will consume food every
+- Food: Your wagon can hold up to 1000 pounds of food.  You will consume food every
     day you are on the trail.
     
 - Ammo: You will need bullets for hunting animals and defending against
